@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
-import { lazy } from '@loadable/component'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+// import { lazy } from '@loadable/component'
+import { HashRouter, Route, Redirect, Switch } from 'react-router-dom'
 // import loadable from './utils/loadable'
 // import 'animate.css'
 // import './style/base.scss'
@@ -8,9 +8,13 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 
 // import Login from './pages/login'
 // import Home from './layout'
+
+import Login from '@/pages/login'
 import { Loading } from '@/components/loading'
 
-const Home = lazy(() => import(/* webpackChunkName: 'default' */ './layout'))
+import Home from './layout'
+
+// const Home = lazy(() => import(/* webpackChunkName: 'default' */ './layout'))
 
 // // 基础页面
 // const View404 = lazy(() =>
@@ -19,13 +23,13 @@ const Home = lazy(() => import(/* webpackChunkName: 'default' */ './layout'))
 // const View500 = lazy(() =>
 //   import(/* webpackChunkName: '500' */ './views/Others/500'),
 // )
-const Login = lazy(() =>
-  import(/* webpackChunkName: 'login' */ './pages/login'),
-)
+// const Login = lazy(() =>
+//   import(/* webpackChunkName: 'login' */ './pages/login'),
+// )
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route path="/" exact render={() => <Redirect to="/login" />} />
         {/* <Route path="/500" component={View500} /> */}
@@ -39,7 +43,6 @@ export default function App() {
           )}
         />
         <Route
-          exact
           path="/home"
           render={() => (
             <Suspense fallback={<Loading />}>
@@ -48,13 +51,9 @@ export default function App() {
           )}
         />
         {/* <Route path="/404" component={View404} /> */}
-        <Route
-          path="*"
-          render={() => {
-            return <div>404</div>
-          }}
-        />
+        <Route exact path="/404" render={() => <div>4044</div>} />
+        <Redirect to="/404" />
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   )
 }

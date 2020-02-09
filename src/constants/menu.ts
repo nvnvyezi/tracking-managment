@@ -2,16 +2,15 @@ import { ICustomMenu } from '@/interface/global'
 
 const menu: ICustomMenu = [
   {
-    key: '/index',
-    title: '首页',
+    key: '/home/welcome',
+    title: '欢迎',
     icon: 'home',
-    auth: [1],
   },
   {
     title: '通用',
     key: '/public',
     icon: 'appstore',
-    auth: [1],
+    auth: true,
     subs: [
       { title: '按钮', key: '/public/button', icon: '' },
       { title: '图标', key: '/public/icon', icon: '' },
@@ -51,7 +50,7 @@ const menu: ICustomMenu = [
     title: '其它',
     key: '/others',
     icon: 'paper-clip',
-    auth: [1],
+    auth: true,
     subs: [
       { title: '进度条', key: '/others/progress', icon: '' },
       { title: '动画', key: '/others/animation', icon: '' },
@@ -78,7 +77,6 @@ const menu: ICustomMenu = [
     title: '关于',
     key: '/about',
     icon: 'user',
-    auth: [1],
   },
 ]
 

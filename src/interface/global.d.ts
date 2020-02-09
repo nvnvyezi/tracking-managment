@@ -4,6 +4,6 @@ export interface ICustomMenuItem {
   key: string
   title: string
   icon: string
-  auth?: [number]
+  auth?: boolean
   subs?: ICustomMenuItem[]
 }

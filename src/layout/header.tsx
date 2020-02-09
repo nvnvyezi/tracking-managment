@@ -15,6 +15,11 @@ export interface ILayoutHeaderProps {
 function LayoutHeader(props: ILayoutHeaderProps) {
   const { menuClick, menuToggle } = props
 
+  let userName = ''
+  try {
+    userName = JSON.parse(localStorage.getItem('username') || '游客')
+  } catch (error) {}
+
   function handleLoginOut() {
     localStorage.clear()
     //     this.props.history.push('/login')
@@ -70,12 +75,15 @@ function LayoutHeader(props: ILayoutHeaderProps) {
         </div>
 
         <Dropdown overlay={userMenu}>
-          <Avatar
-            icon="user"
-            src={avatar}
-            alt="avatar"
-            style={{ cursor: 'pointer', backgroundColor: '#f4f5f6' }}
-          />
+          <span>
+            <Avatar
+              icon="user"
+              src={avatar}
+              alt="avatar"
+              style={{ cursor: 'pointer', backgroundColor: '#f4f5f6' }}
+            />
+            <span className="name">{userName}</span>
+          </span>
         </Dropdown>
       </div>
       <style jsx>{`
@@ -85,6 +93,10 @@ function LayoutHeader(props: ILayoutHeaderProps) {
         }
         .wrapper-user > div {
           margin-right: 15px;
+        }
+        .name {
+          margin-left: 10px;
+          cursor: pointer;
         }
       `}</style>
     </Header>

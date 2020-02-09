@@ -1,16 +1,7 @@
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { JSEncrypt } from 'jsencrypt'
-import {
-  Icon,
-  Form,
-  Input,
-  Button,
-  Divider,
-  Checkbox,
-  message,
-  notification,
-} from 'antd'
+import { Icon, Form, Input, Button, Divider, Checkbox, message } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 
 import axios from '@/utils/axios'
@@ -35,15 +26,20 @@ function Login(props: ILoginProps) {
   const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
-    notification.open({
-      message: '欢迎使用后台管理平台',
-      duration: null,
-      description: '账号 admin(管理员) 其他(游客) 密码随意',
-    })
-    return () => {
-      notification.destroy()
+    // notification.open({
+    //   message: '欢迎使用后台管理平台',
+    //   duration: null,
+    //   description: '账号 admin(管理员) 其他(游客) 密码随意',
+    // })
+    const cacheUserName = localStorage.getItem('username')
+    const cacheToken = localStorage.getItem('token')
+
+    if (cacheToken && cacheUserName) {
+      history.replace('/home/welcome')
+      return
     }
-  }, [])
+    message.info('欢迎使用后台管理平台')
+  }, [history])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -72,20 +68,9 @@ function Login(props: ILoginProps) {
             setLoading(false)
             message.error(err.message)
           })
-        // 这里可以做权限校验 模拟接口返回用户权限标识
-        // switch (values.username) {
-        //   case 'admin':
-        //     values.auth = 0
-        //     break
-        //   default:
-        //     values.auth = 1
-        // }
-        // localStorage.setItem('user', JSON.stringify(values))
-        // enterLoading()
-        // timer = setTimeout(() => {
-        //   message.success('登录成功!')
-        //   props.history.push('/')
-        // }, 2000)
+      } else {
+        const errData = err?.username || err?.password || {}
+        message.error(errData?.errors?.[0]?.message)
       }
     })
   }

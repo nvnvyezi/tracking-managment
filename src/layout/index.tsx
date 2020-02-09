@@ -1,58 +1,16 @@
-import React, { Component } from 'react'
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React, { Suspense } from 'react'
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom'
 import { Layout, BackTop, message } from 'antd'
-// import routes from '@/routes'
-// import { menuToggleAction } from '@/store/actionCreators'
 // import echarts from 'echarts/lib/echarts'
-// import avatar from '@/assets/images/user.jpg'
+import routes from '@/routes'
 import customMenu from '@/constants/menu'
 import { ICustomMenu } from '@/interface/global'
-// import '@/style/layout.scss'
 
-// import AppHeader from './AppHeader.jsx'
 import LayoutSider from './sider'
 import LayoutHeader from './header'
 // import AppFooter from './AppFooter.jsx'
 
-// const { Content } = Layout
-
-// class DefaultLayout extends Component {
-//   state = {
-//     avatar,
-//     show: true,
-//     menu: [],
-//   }
-
-//   isLogin = () => {
-//     if (!localStorage.getItem('user')) {
-//       this.props.history.push('/login')
-//     } else {
-//       this.setState({
-//         menu: this.getMenu(menu),
-//       })
-//     }
-//   }
-
-//   loginOut = () => {
-//     localStorage.clear()
-//     this.props.history.push('/login')
-//     message.success('登出成功!')
-//   }
-//   getMenu = menu => {
-//     let newMenu,
-//       auth = JSON.parse(localStorage.getItem('user')).auth
-//     if (!auth) {
-//       return menu
-//     } else {
-//       newMenu = menu.filter(res => res.auth && res.auth.indexOf(auth) !== -1)
-//       return newMenu
-//     }
-//   }
-
-//   componentDidMount() {
-//     this.isLogin()
-//   }
+const { Content } = Layout
 
 //   componentDidUpdate() {
 //     let { pathname } = this.props.location
@@ -71,101 +29,34 @@ import LayoutHeader from './header'
 //     }
 //   }
 
-//   componentWillUnmount() {
-//     this.timer && clearTimeout(this.timer)
-//   }
-
-//   render() {
-//     let { menuClick, menuToggle } = this.props
-//     let { auth } = JSON.parse(localStorage.getItem('user'))
-//       ? JSON.parse(localStorage.getItem('user'))
-//       : ''
-//     return (
-//       <Layout className="app">
-//         <BackTop />
-//         <AppAside menuToggle={menuToggle} menu={this.state.menu} />
-//         <Layout
-//           style={{
-//             marginLeft: menuToggle ? '80px' : '200px',
-//             minHeight: '100vh',
-//           }}
-//         >
-//           <AppHeader
-//             menuToggle={menuToggle}
-//             menuClick={menuClick}
-//             avatar={this.state.avatar}
-//             show={this.state.show}
-//             loginOut={this.loginOut}
-//           />
-//           <Content className="content">
-//             <Switch>
-//               {routes.map(item => {
-//                 return (
-//                   <Route
-//                     key={item.path}
-//                     path={item.path}
-//                     exact={item.exact}
-//                     render={props =>
-//                       !auth ? (
-//                         <item.component {...props} />
-//                       ) : item.auth && item.auth.indexOf(auth) !== -1 ? (
-//                         <item.component {...props} />
-//                       ) : (
-//                         // 这里也可以跳转到 403 页面
-//                         <Redirect to="/404" {...props} />
-//                       )
-//                     }
-//                   ></Route>
-//                 )
-//               })}
-//               <Redirect to="/404" />
-//             </Switch>
-//           </Content>
-//           <AppFooter />
-//         </Layout>
-//       </Layout>
-//     )
-//   }
-// }
-
-// const stateToProp = state => ({
-//   menuToggle: state.menuToggle,
-// })
-
-// const dispatchToProp = dispatch => ({
-//   menuClick() {
-//     dispatch(menuToggleAction())
-//   },
-// })
-
-// export default withRouter(connect(stateToProp, dispatchToProp)(DefaultLayout))
-
 export default function DefaultLayout() {
+  const history = useHistory()
   const [menu, setMenu] = React.useState<ICustomMenu>(customMenu)
   const [menuToggle, setMenuToggle] = React.useState(false)
-
-  const getMenu = React.useCallback(() => {
-    // let newMenu,
-    //   auth = JSON.parse(localStorage.getItem('user')).auth
-    // if (!auth) {
-    return customMenu
-    // } else {
-    //   newMenu = menu.filter(res => res.auth && res.auth.indexOf(auth) !== -1)
-    //   return newMenu
-    // }
-  }, [])
 
   const handleMenuToggleClick = React.useCallback(() => {
     setMenuToggle(!menuToggle)
   }, [menuToggle])
 
   React.useEffect(() => {
-    // if (!localStorage.getItem('user')) {
-    //   this.props.history.push('/login')
-    // } else {
-    setMenu(getMenu())
-    // }
-  }, [getMenu])
+    const cacheUserName = localStorage.getItem('username')
+    const cacheToken = localStorage.getItem('token')
+    if (!cacheUserName || !cacheToken) {
+      history.push('/login')
+      return
+    } else {
+      let auth
+      let filterMenu = customMenu
+      try {
+        auth = JSON.parse(localStorage.getItem('auth') || '')
+      } catch (error) {}
+      if (!auth) {
+        filterMenu = customMenu.filter(item => !item.auth)
+      }
+
+      setMenu(filterMenu)
+    }
+  }, [history])
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -175,34 +66,27 @@ export default function DefaultLayout() {
         <LayoutHeader
           menuToggle={menuToggle}
           menuClick={handleMenuToggleClick}
-          // avatar={this.state.avatar}
-          // show={this.state.show}
-          // loginOut={this.loginOut}
         />
-        {/* <Content className="content">
+        <Content>
           <Switch>
-            {routes.map(item => {
-              return (
-                <Route
-                  key={item.path}
-                  path={item.path}
-                  exact={item.exact}
-                  render={props =>
-                    !auth ? (
-                      <item.component {...props} />
-                    ) : item.auth && item.auth.indexOf(auth) !== -1 ? (
-                      <item.component {...props} />
-                    ) : (
-                      // 这里也可以跳转到 403 页面
-                      <Redirect to="/404" {...props} />
-                    )
-                  }
-                ></Route>
-              )
-            })}
+            {routes.map(item => (
+              <Route
+                key={item.path}
+                path={item.path}
+                exact={item.exact}
+                render={() => {
+                  const Wrapper = item.component
+                  return (
+                    <Suspense fallback={<div>loading</div>}>
+                      <Wrapper />
+                    </Suspense>
+                  )
+                }}
+              />
+            ))}
             <Redirect to="/404" />
           </Switch>
-        </Content> */}
+        </Content>
         {/* <AppFooter /> */}
       </Layout>
     </Layout>
