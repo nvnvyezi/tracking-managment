@@ -6,12 +6,13 @@ import { Layout, BackTop, message } from 'antd'
 // import { menuToggleAction } from '@/store/actionCreators'
 // import echarts from 'echarts/lib/echarts'
 // import avatar from '@/assets/images/user.jpg'
-import defaultMenu from '@/constants/menu'
-import { IDefaultMenu } from '@/interface/global'
+import customMenu from '@/constants/menu'
+import { ICustomMenu } from '@/interface/global'
 // import '@/style/layout.scss'
 
 // import AppHeader from './AppHeader.jsx'
 import LayoutSider from './sider'
+import LayoutHeader from './header'
 // import AppFooter from './AppFooter.jsx'
 
 // const { Content } = Layout
@@ -140,18 +141,23 @@ import LayoutSider from './sider'
 // export default withRouter(connect(stateToProp, dispatchToProp)(DefaultLayout))
 
 export default function DefaultLayout() {
-  const [menu, setMenu] = React.useState<IDefaultMenu>(defaultMenu)
+  const [menu, setMenu] = React.useState<ICustomMenu>(customMenu)
+  const [menuToggle, setMenuToggle] = React.useState(false)
 
   const getMenu = React.useCallback(() => {
     // let newMenu,
     //   auth = JSON.parse(localStorage.getItem('user')).auth
     // if (!auth) {
-    return defaultMenu
+    return customMenu
     // } else {
     //   newMenu = menu.filter(res => res.auth && res.auth.indexOf(auth) !== -1)
     //   return newMenu
     // }
   }, [])
+
+  const handleMenuToggleClick = React.useCallback(() => {
+    setMenuToggle(!menuToggle)
+  }, [menuToggle])
 
   React.useEffect(() => {
     // if (!localStorage.getItem('user')) {
@@ -162,24 +168,18 @@ export default function DefaultLayout() {
   }, [getMenu])
 
   return (
-    <Layout className="app">
+    <Layout style={{ height: '100vh' }}>
       <BackTop />
-      {/* <LayoutSider menuToggle={menuToggle} menu={this.state.menu} /> */}
-      <LayoutSider menuToggle={true} menu={menu} />
-      {/* <Layout
-        style={{
-          marginLeft: menuToggle ? '80px' : '200px',
-          minHeight: '100vh',
-        }}
-      >
-        <AppHeader
+      <LayoutSider menuToggle={menuToggle} menu={menu} />
+      <Layout>
+        <LayoutHeader
           menuToggle={menuToggle}
-          menuClick={menuClick}
-          avatar={this.state.avatar}
-          show={this.state.show}
-          loginOut={this.loginOut}
+          menuClick={handleMenuToggleClick}
+          // avatar={this.state.avatar}
+          // show={this.state.show}
+          // loginOut={this.loginOut}
         />
-        <Content className="content">
+        {/* <Content className="content">
           <Switch>
             {routes.map(item => {
               return (
@@ -202,9 +202,9 @@ export default function DefaultLayout() {
             })}
             <Redirect to="/404" />
           </Switch>
-        </Content>
-        <AppFooter />
-      </Layout> */}
+        </Content> */}
+        {/* <AppFooter /> */}
+      </Layout>
     </Layout>
   )
 }

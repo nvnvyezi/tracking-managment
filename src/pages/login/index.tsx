@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { JSEncrypt } from 'jsencrypt'
 import {
   Icon,
@@ -31,6 +31,7 @@ function Login(props: ILoginProps) {
   const {
     form: { getFieldDecorator, validateFields },
   } = props
+  const history = useHistory()
   const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
@@ -41,7 +42,6 @@ function Login(props: ILoginProps) {
     })
     return () => {
       notification.destroy()
-      // timer && clearTimeout(timer)
     }
   }, [])
 
@@ -53,8 +53,8 @@ function Login(props: ILoginProps) {
         const jsencrypt = new JSEncrypt()
         jsencrypt.setPublicKey(RSA.publicKey)
         const rsaPassword = jsencrypt.encrypt(password)
-        console.log(username, password, rsaPassword, remember)
         setLoading(true)
+
         axios
           .post<ILoginAxios>(API.login, {
             username,
@@ -63,9 +63,10 @@ function Login(props: ILoginProps) {
           })
           .then(res => {
             setLoading(false)
+            console.log(res)
             localStorage.setItem('username', JSON.stringify(res.data?.username))
             message.success('登录成功!')
-            console.log(res)
+            history.push('/home')
           })
           .catch(err => {
             setLoading(false)

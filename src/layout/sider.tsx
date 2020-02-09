@@ -1,38 +1,38 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
 import { Layout, Icon } from 'antd'
 
 import CustomMenu from '@/components/custom-menu'
-import { IDefaultMenu } from '@/interface/global'
+import { ICustomMenu } from '@/interface/global'
 
 export interface ILayoutSiderProps {
   menuToggle: boolean
-  menu: IDefaultMenu
+  menu: ICustomMenu
 }
 
 const { Sider } = Layout
 
-const AppAside = (props: ILayoutSiderProps) => {
+export default function LayoutSider(props: ILayoutSiderProps) {
   const { menuToggle, menu } = props
   return (
-    <Sider className="aside" collapsed={menuToggle}>
+    <Sider collapsed={menuToggle}>
       <div className="logo">
         <a
-          rel="noopener noreferrer"
-          href="https://github.com/ltadpoles"
           target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/nvnvyezi"
         >
-          <Icon type="github" style={{ fontSize: '3.8rem', color: '#fff' }} />
+          <Icon type="github" style={{ fontSize: '40px', color: '#fff' }} />
         </a>
       </div>
       <CustomMenu menu={menu}></CustomMenu>
+      <style jsx>
+        {`
+          .logo {
+            padding: 40px 0;
+            text-align: center;
+          }
+        `}
+      </style>
     </Sider>
   )
 }
-
-// AppAside.propTypes = {
-//   menuToggle: PropTypes.bool,
-//   menu: PropTypes.array.isRequired,
-// }
-
-export default AppAside

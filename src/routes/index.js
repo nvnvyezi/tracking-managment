@@ -1,68 +1,68 @@
-import loadable from '@/utils/loadable'
+import { lazy } from '@loadable/component'
 
-const Index = loadable(() =>
+const Index = lazy(() =>
   import(/* webpackChunkName: 'index' */ '@/views/Index'),
 )
 
 // 通用
-const ButtonView = loadable(() =>
+const ButtonView = lazy(() =>
   import(/* webpackChunkName: 'button' */ '@/views/PublicView/Button'),
 )
-const IconView = loadable(() =>
+const IconView = lazy(() =>
   import(/* webpackChunkName: 'icon' */ '@/views/PublicView/Icon'),
 )
 
 // 导航
-const DropdownView = loadable(() =>
+const DropdownView = lazy(() =>
   import(/* webpackChunkName: 'dropdown' */ '@/views/NavView/Dropdown'),
 )
-const MenuView = loadable(() =>
+const MenuView = lazy(() =>
   import(/* webpackChunkName: 'menu' */ '@/views/NavView/Menu'),
 )
-const StepView = loadable(() =>
+const StepView = lazy(() =>
   import(/* webpackChunkName: 'step' */ '@/views/NavView/Step'),
 )
 
 // 表单
-const FormBaseView = loadable(() =>
+const FormBaseView = lazy(() =>
   import(/* webpackChunkName: 'formBase' */ '@/views/FormView/FormBaseView'),
 )
-const FormStepView = loadable(() =>
+const FormStepView = lazy(() =>
   import(/* webpackChunkName: 'formStep' */ '@/views/FormView/FormStepView'),
 )
 
 // 展示
-const TableView = loadable(() =>
+const TableView = lazy(() =>
   import(/* webpackChunkName: 'table' */ '@/views/ShowView/Table'),
 )
-const CollapseView = loadable(() =>
+const CollapseView = lazy(() =>
   import(/* webpackChunkName: 'collapse' */ '@/views/ShowView/Collapse'),
 )
-const TreeView = loadable(() =>
+const TreeView = lazy(() =>
   import(/* webpackChunkName: 'tree' */ '@/views/ShowView/Tree'),
 )
-const TabsView = loadable(() =>
+const TabsView = lazy(() =>
   import(/* webpackChunkName: 'tabs' */ '@/views/ShowView/Tabs'),
 )
 
 // 其它
-const ProgressView = loadable(() =>
+const ProgressView = lazy(() =>
   import(/* webpackChunkName: 'progress' */ '@/views/Others/Progress'),
 )
-const AnimationView = loadable(() =>
+const AnimationView = lazy(() =>
   import(/* webpackChunkName: 'animation' */ '@/views/Others/Animation'),
 )
-const EditorView = loadable(() =>
+const EditorView = lazy(() =>
   import(/* webpackChunkName: 'editor' */ '@/views/Others/Editor'),
 )
-const UploadView = loadable(() =>
+const UploadView = lazy(() =>
   import(/* webpackChunkName: 'upload' */ '@/views/Others/Upload'),
 )
 
-const Three = loadable(() =>
+const Three = lazy(() =>
   import(/* webpackChunkName: 'three' */ '@/views/TestView'),
 )
-const About = loadable(() =>
+const About = lazy(() =>
   import(/* webpackChunkName: 'about' */ '@/views/About'),
 )
 

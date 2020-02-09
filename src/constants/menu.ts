@@ -1,4 +1,6 @@
-const menu = [
+import { ICustomMenu } from '@/interface/global'
+
+const menu: ICustomMenu = [
   {
     key: '/index',
     title: '首页',

@@ -1,3 +1,9 @@
-import defaultMenu from '@/constants/menu'
+export type ICustomMenu = ICustomMenuItem[]
 
-export type IDefaultMenu = typeof defaultMenu
+export interface ICustomMenuItem {
+  key: string
+  title: string
+  icon: string
+  auth?: [number]
+  subs?: ICustomMenuItem[]
+}

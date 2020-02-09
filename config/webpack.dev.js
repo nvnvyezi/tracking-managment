@@ -20,6 +20,7 @@ webpackBase.devServer
   .proxy(configuration.PROXY)
   .quiet(true)
   .stats(configuration.STATS || 'minimal')
+  .historyApiFallback(true)
 
 /** 热更新 */
 webpackBase.plugin('hot').use(webpack.HotModuleReplacementPlugin)

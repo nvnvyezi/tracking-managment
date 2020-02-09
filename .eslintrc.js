@@ -14,6 +14,8 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-unused-vars': 'warn',
+        'jsx-a11y/interactive-supports-focus': 'off',
+        'jsx-a11y/click-events-have-key-events': 'off',
         '@typescript-eslint/interface-name-prefix': [
           'error',
           {
