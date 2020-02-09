@@ -1,0 +1,35 @@
+{
+  "eslint.enable": true, //是否开启vscode的eslint
+  "eslint.options": {
+    //指定vscode的eslint所处理的文件的后缀
+    "extensions": [".js", ".ts", ".tsx", ".jsx"]
+  },
+  "prettier.trailingComma": "all",
+  "editor.tabSize": 2,
+  "[javascript]": {
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "editor.fontLigatures": true,
+  "editor.fontFamily": "'Fira Code', 'YaHei Consolas Hybrid', Menlo, Monaco, 'Courier New', monospace",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  /** 用eslint的规则检测js文件 */
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "javascript.validate.enable": false,
+  "editor.fontWeight": "normal"
+}
