@@ -7,6 +7,12 @@ const menu: ICustomMenu = [
     icon: 'home',
   },
   {
+    title: '埋点管理',
+    key: '/control',
+    icon: 'control',
+    subs: [{ title: '新增埋点', key: '/home/addpoint', icon: '' }],
+  },
+  {
     title: '通用',
     key: '/public',
     icon: 'appstore',

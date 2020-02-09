@@ -1,10 +1,9 @@
-import { lazy } from '@loadable/component'
-
 // const Welcome = lazy(() =>
 //   import(/* webpackChunkName: 'index' */ '@/pages/welcome'),
 // )
 
 import Welcome from '@/pages/welcome'
+import AddPoint from '@/pages/add-point'
 
 // // 通用
 // const ButtonView = lazy(() =>
@@ -75,6 +74,13 @@ const routes = [
     exact: true,
     auth: false,
     component: Welcome,
+  },
+  {
+    path: '/home/addpoint',
+    name: '新增埋点',
+    exact: true,
+    auth: false,
+    component: AddPoint,
   },
   // {
   //   path: '/public/button',
