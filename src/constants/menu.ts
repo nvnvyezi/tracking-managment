@@ -16,6 +16,11 @@ const menu: ICustomMenu = [
     ],
   },
   {
+    title: '事件分析',
+    icon: 'appstore',
+    key: '/home/event-analyze',
+  },
+  {
     title: '通用',
     key: '/public',
     icon: 'appstore',

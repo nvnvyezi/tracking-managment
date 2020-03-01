@@ -3,8 +3,9 @@
 // )
 
 import Welcome from '@/pages/welcome'
-import CreateTrack from '@/pages/create-track'
 import Attributes from '@/pages/attributes'
+import CreateTrack from '@/pages/create-track'
+import EventAnalyze from '@/pages/event-analyze'
 
 // // 通用
 // const ButtonView = lazy(() =>
@@ -89,6 +90,13 @@ const routes = [
     exact: true,
     auth: false,
     component: Attributes,
+  },
+  {
+    path: '/home/event-analyze',
+    name: '属性管理',
+    exact: true,
+    auth: false,
+    component: EventAnalyze,
   },
   // {
   //   path: '/public/button',
