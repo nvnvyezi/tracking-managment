@@ -1,11 +1,9 @@
 const chalk = require('chalk')
-const path = require('path')
 const WebpackChain = require('webpack-chain')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin')
 const ProgressBarWebpackPlugin = require('progress-bar-webpack-plugin')
-const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 
 const configuration = require('./configuration')
 
@@ -91,8 +89,6 @@ webpackChain.plugin('progress').use(ProgressBarWebpackPlugin, [
 ])
 
 webpackChain.plugin('dayjs').use(AntdDayjsWebpackPlugin)
-
-webpackChain.plugin('duplicate').use(DuplicatePackageCheckerPlugin)
 
 /** resolve */
 /** alias */
