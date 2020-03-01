@@ -3,7 +3,8 @@
 // )
 
 import Welcome from '@/pages/welcome'
-import AddPoint from '@/pages/add-point'
+import CreateTrack from '@/pages/create-track'
+import Attributes from '@/pages/attributes'
 
 // // 通用
 // const ButtonView = lazy(() =>
@@ -76,11 +77,18 @@ const routes = [
     component: Welcome,
   },
   {
-    path: '/home/addpoint',
+    path: '/home/track/create',
     name: '新增埋点',
     exact: true,
     auth: false,
-    component: AddPoint,
+    component: CreateTrack,
+  },
+  {
+    path: '/home/track/attributes',
+    name: '属性管理',
+    exact: true,
+    auth: false,
+    component: Attributes,
   },
   // {
   //   path: '/public/button',

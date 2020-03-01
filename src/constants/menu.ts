@@ -10,7 +10,10 @@ const menu: ICustomMenu = [
     title: '埋点管理',
     key: '/control',
     icon: 'control',
-    subs: [{ title: '新增埋点', key: '/home/addpoint', icon: '' }],
+    subs: [
+      { title: '新增埋点', key: '/home/track/create', icon: '' },
+      { title: '属性管理', key: '/home/track/attributes', icon: '' },
+    ],
   },
   {
     title: '通用',

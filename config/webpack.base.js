@@ -28,8 +28,8 @@ webpackChain.module
 
 /** style */
 webpackChain.module
-  .rule('css')
-  .test(/\.(c|le)ss$/)
+  .rule('less')
+  .test(/\.less$/)
   .use('style')
   .loader(
     configuration.MODE_DEVELOPMENT
@@ -45,6 +45,35 @@ webpackChain.module
   .options({
     javascriptEnabled: true,
   })
+
+webpackChain.module
+  .rule('scss')
+  .test(/\.scss$/)
+  .use('style')
+  .loader(
+    configuration.MODE_DEVELOPMENT
+      ? 'style-loader'
+      : MiniCssExtractPlugin.loader,
+  )
+  .end()
+  .use('css')
+  .loader('css-loader')
+  .end()
+  .use('sass')
+  .loader('sass-loader')
+
+webpackChain.module
+  .rule('css')
+  .test(/\.css$/)
+  .use('style')
+  .loader(
+    configuration.MODE_DEVELOPMENT
+      ? 'style-loader'
+      : MiniCssExtractPlugin.loader,
+  )
+  .end()
+  .use('css')
+  .loader('css-loader')
 
 /** 图片 */
 webpackChain.module
