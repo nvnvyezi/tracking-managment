@@ -10,7 +10,7 @@ export default function createPoint() {
         { label: '', value: '新增埋点' },
       ]}
     >
-      <div>event</div>
+      <div>create track</div>
     </Content>
   )
 }

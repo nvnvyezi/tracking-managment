@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 
 interface IContentProps {
   className?: string
-  children?: React.ReactChild
+  // children?: React.ReactChild
+  children?: any
   crumbData?: {
     label: string
     value: string

@@ -1,16 +1,15 @@
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { JSEncrypt } from 'jsencrypt'
-import { Icon, Form, Input, Button, Divider, Checkbox, message } from 'antd'
-import { WrappedFormUtils } from 'antd/lib/form/Form'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
+import { Form, Input, Button, Divider, Checkbox, message } from 'antd'
 
 import axios from '@/utils/axios'
 import * as API from '@/constants/api'
 import * as RSA from '@/constants/rsa'
 
-interface ILoginProps {
-  form: WrappedFormUtils
-}
+import './index.less'
 
 interface ILoginAxios {
   username: string
@@ -18,10 +17,14 @@ interface ILoginAxios {
   status: boolean
 }
 
-function Login(props: ILoginProps) {
-  const {
-    form: { getFieldDecorator, validateFields },
-  } = props
+interface IFormValues {
+  // username: string
+  // password: string
+  // remember: boolean
+  [name: string]: string | boolean
+}
+
+export default function Login() {
   const history = useHistory()
   const [loading, setLoading] = React.useState(false)
 
@@ -41,38 +44,34 @@ function Login(props: ILoginProps) {
     message.info('欢迎使用后台管理平台')
   }, [history])
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    validateFields((err, values) => {
-      if (!err) {
-        const { username, password, remember } = values
-        const jsencrypt = new JSEncrypt()
-        jsencrypt.setPublicKey(RSA.publicKey)
-        const rsaPassword = jsencrypt.encrypt(password)
-        setLoading(true)
+  const handleFinish = (values: IFormValues) => {
+    const { username, password, remember } = values
+    const jsencrypt = new JSEncrypt()
+    jsencrypt.setPublicKey(RSA.publicKey)
+    const rsaPassword = jsencrypt.encrypt(password)
+    setLoading(true)
 
-        axios
-          .post<ILoginAxios>(API.login, {
-            username,
-            password: rsaPassword,
-            remember,
-          })
-          .then(res => {
-            setLoading(false)
-            console.log(res)
-            localStorage.setItem('username', JSON.stringify(res.data?.username))
-            message.success('登录成功!')
-            history.push('/home')
-          })
-          .catch(err => {
-            setLoading(false)
-            message.error(err.message)
-          })
-      } else {
-        const errData = err?.username || err?.password || {}
-        message.error(errData?.errors?.[0]?.message)
-      }
-    })
+    axios
+      .post<ILoginAxios>(API.login, {
+        username,
+        password: rsaPassword,
+        remember,
+      })
+      .then(res => {
+        setLoading(false)
+        console.log(res)
+        localStorage.setItem('username', JSON.stringify(res.data?.username))
+        message.success('登录成功!')
+        history.push('/home')
+      })
+      .catch(err => {
+        setLoading(false)
+        message.error(err.message)
+      })
+  }
+
+  const handleFinishFailed = ({ errorFields }: ValidateErrorEntity) => {
+    message.error(errorFields?.[0]?.errors?.[0])
   }
 
   return (
@@ -80,53 +79,48 @@ function Login(props: ILoginProps) {
       <div className="wrapper-form">
         <h3>后台管理系统</h3>
         <Divider />
-        <Form onSubmit={handleSubmit}>
-          <Form.Item>
-            {getFieldDecorator('username', {
-              rules: [
-                { required: true, max: 16, min: 1, message: '用户名格式不对!' },
-              ],
-            })(
-              <Input
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,0.25)' }} />
-                }
-                maxLength={16}
-                placeholder="用户名"
-                style={{ height: 32 }}
-              />,
-            )}
+        <Form
+          onFinish={handleFinish}
+          initialValues={{ remember: true }}
+          onFinishFailed={handleFinishFailed}
+        >
+          <Form.Item
+            name="username"
+            rules={[
+              { required: true, max: 16, min: 1, message: '用户名格式不对!' },
+            ]}
+          >
+            <Input
+              maxLength={16}
+              placeholder="用户名"
+              prefix={<UserOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, max: 16, min: 6, message: '请输入密码' }]}
+          >
+            <Input
+              maxLength={16}
+              type="password"
+              placeholder="密码"
+              prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+            />
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator('password', {
-              rules: [
-                { required: true, max: 16, min: 6, message: '请输入密码' },
-              ],
-            })(
-              <Input
-                prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,0.25)' }} />
-                }
-                maxLength={16}
-                type="password"
-                placeholder="密码"
-                style={{ height: 32 }}
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(<Checkbox>记住密码</Checkbox>)}
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox>记住密码</Checkbox>
+            </Form.Item>
             <Link to="/registry" style={{ float: 'right' }}>
               立即注册
             </Link>
+          </Form.Item>
+          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
               loading={loading}
-              style={{ width: '100%', marginTop: '5px' }}
+              style={{ width: '100%' }}
             >
               登录
             </Button>
@@ -153,6 +147,3 @@ function Login(props: ILoginProps) {
     </div>
   )
 }
-
-export default Form.create()(Login)
-// export default withRouter(Form.create()(Login))
