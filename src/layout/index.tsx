@@ -41,21 +41,21 @@ export default function DefaultLayout() {
   React.useEffect(() => {
     const cacheUserName = localStorage.getItem('username')
     const cacheToken = localStorage.getItem('token')
-    if (!cacheUserName || !cacheToken) {
-      history.push('/login')
-      return
-    } else {
-      let auth
-      let filterMenu = customMenu
-      try {
-        auth = JSON.parse(localStorage.getItem('auth') || '')
-      } catch (error) {}
-      if (!auth) {
-        filterMenu = customMenu.filter(item => !item.auth)
-      }
-
-      setMenu(filterMenu)
+    // if (!cacheUserName || !cacheToken) {
+    //   history.push('/login')
+    //   return
+    // } else {
+    let auth
+    let filterMenu = customMenu
+    try {
+      auth = JSON.parse(localStorage.getItem('auth') || '')
+    } catch (error) {}
+    if (!auth) {
+      filterMenu = customMenu.filter(item => !item.auth)
     }
+
+    setMenu(filterMenu)
+    // }
   }, [history])
 
   return (
