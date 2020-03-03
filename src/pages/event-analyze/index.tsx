@@ -4,24 +4,8 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 import Content from '@/layout/content'
 
-import CustomTable from '@/components/custom-table'
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 10 },
-    sm: { span: 4 },
-  },
-  wrapperCol: {
-    xs: { span: 10 },
-    sm: { span: 20 },
-  },
-}
-const formItemLayoutWithOutLabel = {
-  wrapperCol: {
-    xs: { span: 24, offset: 0 },
-    sm: { span: 20, offset: 4 },
-  },
-}
+import Echarts from './echarts'
+import EventAnalyzeTable from './table'
 
 const { Option } = Select
 
@@ -129,14 +113,15 @@ export default function createTrack() {
     <Content
       crumbData={[
         { label: '/home/welcome', value: '首页' },
-        { label: '', value: '新增埋点' },
+        { label: '', value: '事件分析' },
       ]}
     >
       <div className="wrapper-form">
         <h4>事件选择</h4>
         {renderFormContent()}
       </div>
-      <CustomTable />
+      <Echarts />
+      <EventAnalyzeTable />
       <style jsx>{`
         .wrapper-form {
           padding: 20px;

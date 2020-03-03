@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Menu, Icon } from 'antd'
+import { Menu } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 
 import { ICustomMenu, ICustomMenuItem } from '@/interface/global'
@@ -8,8 +8,7 @@ export interface ICustomMenuProps {
   menu: ICustomMenu
 }
 
-export default function CustomMenu(props: ICustomMenuProps) {
-  const { menu = [] } = props
+export default function CustomMenu({ menu = [] }: ICustomMenuProps) {
   const { pathname } = useLocation()
 
   const [selectedKeys, setSelectedKeys] = React.useState<[string]>(['/'])
@@ -30,11 +29,11 @@ export default function CustomMenu(props: ICustomMenuProps) {
   //   }
   // }
 
-  function renderMenuItem({ key, icon, title }: ICustomMenuItem) {
+  function renderMenuItem({ key, Icon, title }: ICustomMenuItem) {
     return (
       <Menu.Item key={key}>
         <Link to={key}>
-          {icon && <Icon type={icon} />}
+          {Icon && <Icon />}
           <span>{title}</span>
         </Link>
       </Menu.Item>
@@ -42,13 +41,13 @@ export default function CustomMenu(props: ICustomMenuProps) {
   }
 
   // 循环遍历数组中的子项 subs ，生成子级 menu
-  function renderSubMenu({ key, icon, title, subs }: ICustomMenuItem) {
+  function renderSubMenu({ key, Icon, title, subs }: ICustomMenuItem) {
     return (
       <Menu.SubMenu
         key={key}
         title={
           <span>
-            {icon && <Icon type={icon} />}
+            {Icon && <Icon />}
             <span>{title}</span>
           </span>
         }

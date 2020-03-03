@@ -1,5 +1,15 @@
 import * as React from 'react'
-import { Menu, Dropdown, Icon, Layout, Avatar, Badge } from 'antd'
+import { Menu, Dropdown, Layout, Avatar, Badge } from 'antd'
+import {
+  EditOutlined,
+  BellOutlined,
+  UserOutlined,
+  SettingFilled,
+  GithubOutlined,
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+} from '@ant-design/icons'
 
 import avatar from '@Images/user.jpg'
 
@@ -26,23 +36,30 @@ function LayoutHeader(props: ILayoutHeaderProps) {
     //     message.success('登出成功!')
   }
 
+  const menuProps = {
+    onClick: menuClick,
+    style: {
+      fontSize: '20px',
+    },
+  }
+
   const userMenu = (
     <Menu>
       <Menu.ItemGroup title="用户设置">
         <Menu.Divider />
         <Menu.Item>
-          <Icon type="edit" />
+          <EditOutlined />
           个人设置
         </Menu.Item>
         <Menu.Item>
-          <Icon type="setting" theme="filled" />
+          <SettingFilled />
           系统设置
         </Menu.Item>
       </Menu.ItemGroup>
       <Menu.Divider />
       <Menu.Item>
         <span role="button" onClick={handleLoginOut}>
-          <Icon type="logout" /> 退出登录
+          <LogoutOutlined /> 退出登录
         </span>
       </Menu.Item>
     </Menu>
@@ -50,12 +67,11 @@ function LayoutHeader(props: ILayoutHeaderProps) {
 
   return (
     <Header className="layout-header">
-      <Icon
-        onClick={menuClick}
-        style={{ fontSize: '20px' }}
-        type={menuToggle ? 'menu-unfold' : 'menu-fold'}
-      />
-
+      {menuToggle ? (
+        <MenuUnfoldOutlined {...menuProps} />
+      ) : (
+        <MenuFoldOutlined {...menuProps} />
+      )}
       <div className="wrapper-user">
         <div>
           <a
@@ -63,13 +79,13 @@ function LayoutHeader(props: ILayoutHeaderProps) {
             rel="noopener noreferrer"
             href="https://github.com/ltadpoles/react-admin"
           >
-            <Icon type="github" style={{ color: '#000' }} />
+            <GithubOutlined style={{ color: '#000' }} />
           </a>
         </div>
         <div>
           <Badge dot={true} offset={[-2, 0]}>
             <a href="https://github.com/ltadpoles/react-admin">
-              <Icon type="bell" />
+              <BellOutlined />
             </a>
           </Badge>
         </div>
@@ -77,7 +93,7 @@ function LayoutHeader(props: ILayoutHeaderProps) {
         <Dropdown overlay={userMenu}>
           <span>
             <Avatar
-              icon="user"
+              icon={UserOutlined}
               src={avatar}
               alt="avatar"
               style={{ cursor: 'pointer', backgroundColor: '#f4f5f6' }}
