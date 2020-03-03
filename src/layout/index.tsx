@@ -32,7 +32,7 @@ const { Content } = Layout
 export default function DefaultLayout() {
   const history = useHistory()
   const [menu, setMenu] = React.useState<ICustomMenu>(customMenu)
-  const [menuToggle, setMenuToggle] = React.useState(false)
+  const [menuToggle, setMenuToggle] = React.useState(true)
 
   const handleMenuToggleClick = React.useCallback(() => {
     setMenuToggle(!menuToggle)

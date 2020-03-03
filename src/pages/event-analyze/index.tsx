@@ -1,6 +1,6 @@
 import React from 'react'
-import { Form, Select, Button, Row, Col } from 'antd'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { Form, Select, Button, DatePicker } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
 import Content from '@/layout/content'
 
@@ -8,6 +8,12 @@ import Echarts from './echarts'
 import EventAnalyzeTable from './table'
 
 const { Option } = Select
+const { RangePicker } = DatePicker
+
+const initData: any[] = []
+for (let i = 10; i < 36; i++) {
+  initData.push({ label: i.toString(36) + i, value: i.toString(36) + i })
+}
 
 export default function createTrack() {
   const handleFinish = (values: any) => {
@@ -16,93 +22,43 @@ export default function createTrack() {
 
   function renderFormContent() {
     return (
-      <Form
-        name="event_analyze"
-        onFinish={handleFinish}
-        wrapperCol={{
-          xs: { span: 10, offset: 0 },
-          sm: { span: 10, offset: 4 },
-        }}
-      >
-        <Form.List name="names">
-          {(fields, { add, remove }) => (
-            <div>
-              {fields.map((field, index) => (
-                <Row key={field.key}>
-                  <Form.Item
-                    // {...(index === 0
-                    //   ? formItemLayout
-                    //   : formItemLayoutWithOutLabel)}
-                    // {...formItemLayout}
-                    label={index + 1}
-                    required={false}
-                    className="form-line"
-                  >
-                    <Col>
-                      <Form.Item
-                        name="event"
-                        label={index}
-                        hasFeedback
-                        rules={[
-                          {
-                            required: true,
-                            message: '请选泽事件!',
-                          },
-                        ]}
-                      >
-                        <Select placeholder="Please select a country">
-                          <Option value="china">China</Option>
-                          <Option value="usa">U.S.A</Option>
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    <Col>
-                      <Form.Item
-                        name="options"
-                        label={index}
-                        hasFeedback
-                        rules={[
-                          {
-                            required: true,
-                            message: '请选择选项',
-                          },
-                        ]}
-                      >
-                        <Select placeholder="Please select a country">
-                          <Option value="china">China</Option>
-                          <Option value="usa">U.S.A</Option>
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    {/* {fields.length > 1 && ( */}
-                    <MinusCircleOutlined
-                      className="dynamic-delete-button"
-                      onClick={() => {
-                        remove(field.name)
-                      }}
-                    />
-                    {/* )} */}
-                  </Form.Item>
-                </Row>
-              ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => {
-                    add()
-                  }}
-                  style={{ width: '60%' }}
-                >
-                  <PlusOutlined />
-                  Add field
-                </Button>
-              </Form.Item>
-            </div>
-          )}
-        </Form.List>
+      <Form name="event_analyze" layout="inline" onFinish={handleFinish}>
+        <Form.Item name="events" style={{ width: 400, marginBottom: 20 }}>
+          <Select
+            mode="multiple"
+            placeholder="请选择需要查询的事件"
+            defaultValue={['a10', 'c12']}
+          >
+            {initData.map(item => (
+              <Option key={item.label} value={item.value}>
+                {item.value}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name="second" style={{ width: 200 }}>
+          <Select
+            mode="multiple"
+            placeholder="请选择需要查询的事件"
+            defaultValue={['a10', 'c12']}
+          >
+            {initData.map(item => (
+              <Option key={item.label} value={item.value}>
+                {item.value}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+        <Form.Item name="third">
+          <RangePicker
+            style={{ width: 400 }}
+            placeholder={['开始日期', '结束日期']}
+          />
+        </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            <PlusOutlined />
+            查询
           </Button>
         </Form.Item>
       </Form>
@@ -126,11 +82,8 @@ export default function createTrack() {
         .wrapper-form {
           padding: 20px;
           border-radius: 4px;
-          box-shadow: 0px 2px 13px 0px rgba(228, 228, 228, 0.6);
           background-color: rgb(255, 255, 255);
-        }
-        .wrapper-form :glpbal(.form-line) {
-          display: flex;
+          box-shadow: 0px 2px 13px 0px rgba(228, 228, 228, 0.6);
         }
       `}</style>
     </Content>
