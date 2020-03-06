@@ -99,3 +99,101 @@ export const attrSourceData = [
     createby: 'lly',
   },
 ]
+
+export const pointSourceData = [
+  {
+    id: '199801',
+    eventName: 'showPage',
+    description: '改变页面（仅包括品质指标和工程数据）',
+    params: 'title',
+    basicInfo: '',
+    duty: 'lly',
+    createtime: '2020-02-20',
+    createby: 'lly',
+  },
+  {
+    id: '199802',
+    eventName: 'showDashBoard',
+    description: '改变dashBoard',
+    params: 'title',
+    basicInfo: '',
+    duty: 'lly',
+    createtime: '2020-02-20',
+    createby: 'lly',
+  },
+  {
+    id: '199803',
+    eventName: 'openMetricDataPage',
+    description: '打开团队数据相关页面',
+    params: 'title',
+    basicInfo: '',
+    duty: 'lly',
+    createtime: '2020-02-20',
+    createby: 'lly',
+  },
+  {
+    id: '199804',
+    eventName: 'changeDashBoard',
+    description: '改变dashBoard',
+    params: 'title',
+    basicInfo: '',
+    duty: 'lly',
+    createtime: '2020-02-20',
+    createby: 'lly',
+  },
+  {
+    id: '199805',
+    eventName: 'changePage',
+    description: '改变page（仅包括品质指标和工程数据）',
+    params: 'title',
+    basicInfo: '',
+    duty: 'lly',
+    createtime: '2020-02-20',
+    createby: 'lly',
+  },
+  {
+    id: '199806',
+    eventName: 'publicDashBoard',
+    description: '公共看板',
+    params: 'title',
+    basicInfo: '',
+    duty: 'lly',
+    createtime: '2020-02-20',
+    createby: 'lly',
+  },
+]
+
+export const pointFilterItems = [
+  {
+    label: '操作系统',
+    defaultValue: '全部',
+  },
+  {
+    label: '埋点类型',
+    defaultValue: '全部',
+  },
+  {
+    label: '埋点状态',
+    defaultValue: '全部',
+  },
+  {
+    label: '功能模块',
+    defaultValue: '全部',
+  },
+  {
+    label: '埋点需求',
+    defaultValue: '全部',
+  },
+  {
+    label: '负责人',
+    defaultValue: '全部',
+  },
+  {
+    label: '上线版本',
+    defaultValue: '全部',
+  },
+  {
+    label: 'Param',
+    defaultValue: '全部',
+  },
+]

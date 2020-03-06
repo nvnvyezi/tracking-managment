@@ -5,7 +5,7 @@ import { Table, Input, Button } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { ColumnProps } from 'antd/es/table'
 
-import { attrSourceData } from 'mocks/data'
+import { attrSourceData } from '../../../mocks/data'
 
 const { Search } = Input
 
@@ -27,10 +27,12 @@ export default function Attributes() {
 
   const handleEdit = (item: IAttrData) => {
     // edit
+    console.log(item)
   }
 
   const handleDelete = (item: IAttrData) => {
     // delete
+    console.log(item)
   }
 
   const columns: ColumnProps<IAttrData>[] = [
