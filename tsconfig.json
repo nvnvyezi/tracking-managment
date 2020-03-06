@@ -40,6 +40,6 @@
     // "allowJs": true,
     "typeRoots": ["node_modules/@types/", "./global.d.ts"]
   },
-  "include": ["src/**/*", "./global.d.ts"],
+  "include": ["src/**/*", "./global.d.ts", "mocks/**/*"],
   "exclude": ["node_modules"]
 }

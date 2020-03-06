@@ -5,7 +5,7 @@ import { Table, Input, Button } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { ColumnProps } from 'antd/es/table'
 
-import { attrSourceData } from '../../../mocks/data'
+import { attrSourceData } from '../../../mocks/attributes'
 
 const { Search } = Input
 

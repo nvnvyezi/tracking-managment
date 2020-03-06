@@ -62,7 +62,7 @@ module.exports = {
     // 解决webpack alias 找不到模块 问题
     'import/resolver': {
       alias: {
-        map: [['Images', './src/assets/images/']],
+        map: [['@Images', './src/assets/images/']],
       },
     },
   },
