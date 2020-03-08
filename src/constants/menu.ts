@@ -13,7 +13,7 @@ const menu: ICustomMenu = [
     // Icon: 'control',
     Icon: HomeOutlined,
     subs: [
-      { title: '新增埋点', key: '/home/track/create', Icon: '' },
+      { title: '埋点集合', key: '/home/track/create', Icon: '' },
       { title: '属性管理', key: '/home/track/attributes', Icon: '' },
     ],
   },

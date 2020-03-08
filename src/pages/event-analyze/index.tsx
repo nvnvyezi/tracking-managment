@@ -72,7 +72,7 @@ export default function createTrack() {
         { label: '', value: '事件分析' },
       ]}
     >
-      <div className="wrapper-form">
+      <div className="card-style wrapper-form">
         <h4>事件选择</h4>
         {renderFormContent()}
       </div>
@@ -80,10 +80,6 @@ export default function createTrack() {
       <EventAnalyzeTable />
       <style jsx>{`
         .wrapper-form {
-          padding: 20px;
-          border-radius: 4px;
-          background-color: rgb(255, 255, 255);
-          box-shadow: 0px 2px 13px 0px rgba(228, 228, 228, 0.6);
         }
       `}</style>
     </Content>

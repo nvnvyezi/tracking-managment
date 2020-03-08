@@ -127,17 +127,12 @@ export default function Echarts() {
   }
 
   return (
-    <div className="wrapper-echarts">
+    <div className="card-style wrapper-echarts">
       <h4>图标</h4>
       <ReactEchartsCommon option={options} style={{ height: 500 }} />
       <style jsx>{`
         .wrapper-echarts {
           margin-top: 20px;
-          padding: 20px;
-          border-radius: 4px;
-          background-color: rgb(255, 255, 255);
-          box-shadow: 0px 2px 13px 0px rgba(228, 228, 228, 0.6);
-        }
       `}</style>
     </div>
   )

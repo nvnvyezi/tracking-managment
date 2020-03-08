@@ -16,7 +16,6 @@ exports.MODULES = resolve('../src/')
 exports.ALIAS = {
   '@': resolve('../src'),
   '@Images': resolve('../src/assets/images'),
-  '@Mocks': resolve('../mocks'),
 }
 
 /** devServer */

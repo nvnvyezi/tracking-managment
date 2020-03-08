@@ -32,6 +32,11 @@ export default function App() {
     <HashRouter>
       <Switch>
         <Route path="/" exact render={() => <Redirect to="/login" />} />
+        <Route
+          exact
+          path="/home"
+          render={() => <Redirect to="/home/welcome" />}
+        />
         {/* <Route path="/500" component={View500} /> */}
         <Route
           exact

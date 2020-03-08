@@ -11,11 +11,12 @@ module.exports = {
       extends: ['plugin:@typescript-eslint/recommended'],
       parser: '@typescript-eslint/parser',
       rules: {
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-var-requires': 'off',
+        'react/display-name': 'off',
         '@typescript-eslint/no-unused-vars': 'warn',
+        '@typescript-eslint/no-var-requires': 'off',
         'jsx-a11y/interactive-supports-focus': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/interface-name-prefix': [
           'error',
           {

@@ -3,8 +3,8 @@
 // )
 
 import Welcome from '@/pages/welcome'
+import Tracking from '@/pages/tracking'
 import Attributes from '@/pages/attributes'
-import CreateTrack from '@/pages/create-track'
 import EventAnalyze from '@/pages/event-analyze'
 
 // // 通用
@@ -79,10 +79,10 @@ const routes = [
   },
   {
     path: '/home/track/create',
-    name: '新增埋点',
+    name: '埋点集合',
     exact: true,
     auth: false,
-    component: CreateTrack,
+    component: Tracking,
   },
   {
     path: '/home/track/attributes',

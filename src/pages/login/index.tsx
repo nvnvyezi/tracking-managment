@@ -62,7 +62,7 @@ export default function Login() {
         console.log(res)
         localStorage.setItem('username', JSON.stringify(res.data?.username))
         message.success('登录成功!')
-        history.push('/home')
+        history.push('/home/welcome')
       })
       .catch(err => {
         setLoading(false)
@@ -76,7 +76,7 @@ export default function Login() {
 
   return (
     <div className="wrapper">
-      <div className="wrapper-form">
+      <div className="card-style wrapper-form">
         <h3>后台管理系统</h3>
         <Divider />
         <Form
@@ -139,9 +139,6 @@ export default function Login() {
         .wrapper-form {
           width: 350px;
           padding: 20px 20px 0;
-          border-radius: 5px;
-          box-shadow: 0px 2px 13px 0px rgba(228, 228, 228, 0.6);
-          background-color: #fff;
         }
       `}</style>
     </div>

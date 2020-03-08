@@ -17,48 +17,6 @@ ul {
   list-style: none;
 }
 
-h1 {
-  font-size: 26px;
-  color: rgb(153, 153, 153);
-}
-
-h2 {
-  font-size: 24px;
-  color: rgb(153, 153, 153);
-}
-
-h3 {
-  font-size: 20px;
-  color: rgb(153, 153, 153);
-}
-
-h4 {
-  font-size: 16px;
-  color: rgb(153, 153, 153);
-}
-
-q:before,
-q:after {
-  content: '';
-}
-
-/* 统一上标和下标 */
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-
-sup {
-  top: -5px;
-}
-
-sub {
-  bottom: -2.5px;
-}
-
 /* 默认不显示下划线，保持页面简洁 */
 ins,
 a {
@@ -69,53 +27,4 @@ a {
 a:focus,
 *:focus {
   outline: none;
-}
-
-/* 清除浮动 */
-.clearfix:before,
-.clearfix:after {
-  content: '';
-  display: block;
-}
-
-.clearfix:after {
-  clear: both;
-  overflow: hidden;
-}
-
-.clearfix {
-  zoom: 1;
-  /* for ie6 & ie7 */
-}
-
-.clear {
-  clear: both;
-  display: block;
-  font-size: 0;
-  height: 0;
-  line-height: 0;
-  overflow: hidden;
-}
-
-/* 设置显示和隐藏，通常用来与 js 配合 */
-.hide {
-  display: none;
-}
-
-.block {
-  display: block;
-}
-
-/* 设置浮动，减少浮动带来的 bug */
-.fl,
-.fr {
-  display: inline;
-}
-
-.fl {
-  float: left;
-}
-
-.fr {
-  float: right;
 }

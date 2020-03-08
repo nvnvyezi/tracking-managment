@@ -18,17 +18,6 @@ export default function CustomMenu({ menu = [] }: ICustomMenuProps) {
     setSelectedKeys([pathname])
   }, [pathname])
 
-  // // 点击面包屑导航时 侧边栏同步响应
-  // componentDidUpdate(prevProps, prevState) {
-  //   let { pathname } = this.props.location
-  //   if (prevProps.location.pathname !== pathname) {
-  //     this.setState({
-  //       selectedKeys: [pathname],
-  //       openKeys: this.getOpenKeys(pathname),
-  //     })
-  //   }
-  // }
-
   function renderMenuItem({ key, Icon, title }: ICustomMenuItem) {
     return (
       <Menu.Item key={key}>
