@@ -29,7 +29,15 @@ webpackChain.module
 /** style */
 webpackChain.module
   .rule('less')
-  .test(/\.less$/)
+  .test(/\.(c|le)ss$/)
+  .exclude //
+  .add(path => {
+    if (['antd'].some(pkg => path.includes(pkg))) {
+      return false
+    }
+    return path.includes('node_modules')
+  })
+  .end()
   .use('style')
   .loader(
     configuration.MODE_DEVELOPMENT
@@ -49,6 +57,8 @@ webpackChain.module
 webpackChain.module
   .rule('scss')
   .test(/\.scss$/)
+  .exclude.add(/node_modules/)
+  .end()
   .use('style')
   .loader(
     configuration.MODE_DEVELOPMENT
@@ -61,19 +71,6 @@ webpackChain.module
   .end()
   .use('sass')
   .loader('sass-loader')
-
-webpackChain.module
-  .rule('css')
-  .test(/\.css$/)
-  .use('style')
-  .loader(
-    configuration.MODE_DEVELOPMENT
-      ? 'style-loader'
-      : MiniCssExtractPlugin.loader,
-  )
-  .end()
-  .use('css')
-  .loader('css-loader')
 
 /** 图片 */
 webpackChain.module

@@ -3,7 +3,7 @@ import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 
 interface ICrumb {
-  label: string
+  label?: string
   value: string
 }
 
@@ -15,6 +15,7 @@ interface IContentProps {
 }
 
 export default function Content({
+  style,
   children,
   className,
   crumbData,
@@ -24,7 +25,7 @@ export default function Content({
     crumb = crumb.concat(crumbData)
   }
   return (
-    <main className={className}>
+    <main className={className} style={style}>
       <Breadcrumb style={{ marginBottom: 30 }}>
         {crumb.map(item => (
           <Breadcrumb.Item key={item.label || item.value}>

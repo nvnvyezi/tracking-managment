@@ -13,8 +13,9 @@ const menu: ICustomMenu = [
     // Icon: 'control',
     Icon: HomeOutlined,
     subs: [
-      { title: '埋点集合', key: '/home/track/create', Icon: '' },
-      { title: '属性管理', key: '/home/track/attributes', Icon: '' },
+      { title: '埋点集合', key: '/home/track/show' },
+      { title: '新增埋点', key: '/home/track/create' },
+      { title: '属性管理', key: '/home/track/attributes' },
     ],
   },
   {
@@ -30,8 +31,8 @@ const menu: ICustomMenu = [
     // Icon: 'appstore',
     auth: true,
     subs: [
-      { title: '按钮', key: '/public/button', Icon: '' },
-      { title: '图标', key: '/public/icon', Icon: '' },
+      { title: '按钮', key: '/public/button' },
+      { title: '图标', key: '/public/icon' },
     ],
   },
   {
@@ -40,9 +41,9 @@ const menu: ICustomMenu = [
     Icon: HomeOutlined,
     // Icon: 'bulb',
     subs: [
-      { title: '下拉菜单', key: '/nav/dropdown', Icon: '' },
-      { title: '导航菜单', key: '/nav/menu', Icon: '' },
-      { title: '步骤条', key: '/nav/steps', Icon: '' },
+      { title: '下拉菜单', key: '/nav/dropdown' },
+      { title: '导航菜单', key: '/nav/menu' },
+      { title: '步骤条', key: '/nav/steps' },
     ],
   },
   {
@@ -51,8 +52,8 @@ const menu: ICustomMenu = [
     Icon: HomeOutlined,
     // Icon: 'form',
     subs: [
-      { title: '基础表单', key: '/form/base-form', Icon: '' },
-      { title: '步骤表单', key: '/form/step-form', Icon: '' },
+      { title: '基础表单', key: '/form/base-form' },
+      { title: '步骤表单', key: '/form/step-form' },
     ],
   },
   {
@@ -61,10 +62,10 @@ const menu: ICustomMenu = [
     Icon: HomeOutlined,
     // Icon: 'pie-chart',
     subs: [
-      { title: '表格', key: '/show/table', Icon: '' },
-      { title: '折叠面板', key: '/show/collapse', Icon: '' },
-      { title: '树形控件', key: '/show/tree', Icon: '' },
-      { title: '标签页', key: '/show/tabs', Icon: '' },
+      { title: '表格', key: '/show/table' },
+      { title: '折叠面板', key: '/show/collapse' },
+      { title: '树形控件', key: '/show/tree' },
+      { title: '标签页', key: '/show/tabs' },
     ],
   },
   {
@@ -74,12 +75,12 @@ const menu: ICustomMenu = [
     // Icon: 'paper-clip',
     auth: true,
     subs: [
-      { title: '进度条', key: '/others/progress', Icon: '' },
-      { title: '动画', key: '/others/animation', Icon: '' },
-      { title: '上传', key: '/others/upload', Icon: '' },
-      { title: '富文本', key: '/others/editor', Icon: '' },
-      { title: '404', key: '/404', Icon: '' },
-      { title: '500', key: '/500', Icon: '' },
+      { title: '进度条', key: '/others/progress' },
+      { title: '动画', key: '/others/animation' },
+      { title: '上传', key: '/others/upload' },
+      { title: '富文本', key: '/others/editor' },
+      { title: '404', key: '/404' },
+      { title: '500', key: '/500' },
     ],
   },
   {
@@ -91,8 +92,7 @@ const menu: ICustomMenu = [
       {
         title: '二级',
         key: '/one/two',
-        Icon: '',
-        subs: [{ title: '三级', key: '/one/two/three', Icon: '' }],
+        subs: [{ title: '三级', key: '/one/two/three' }],
       },
     ],
   },

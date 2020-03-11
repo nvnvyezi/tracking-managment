@@ -1,11 +1,15 @@
 import React from 'react'
-import { ColumnProps } from 'antd/es/table'
-import { Table, Button, Select, Form, Row, Col, Dropdown, Menu } from 'antd'
+import { Button, Select, Form, Row, Col, Dropdown, Menu } from 'antd'
 import { SearchOutlined, RedoOutlined, DownOutlined } from '@ant-design/icons'
+
+import { ClickParam } from 'antd/lib/menu'
+import { ColumnProps } from 'antd/es/table'
+
+import { formData } from '@/constants/tracking'
 
 import Content from '@/layout/content'
 
-import { formData } from '@/constants/tracking'
+import CustomTable from '@/components/custom-table'
 
 import { pointSourceData } from '../../../mocks/creat-tracking'
 
@@ -51,39 +55,54 @@ export default function CreatePoint() {
 
   const columns: ColumnProps<IPoint>[] = [
     {
+      title: '操作系统',
+      key: 'system',
+      dataIndex: 'system',
+    },
+    {
+      key: 'event',
       title: '事件名',
-      dataIndex: 'eventName',
-      key: 'eventName',
+      dataIndex: 'event',
     },
     {
+      key: 'describe',
       title: '事件描述',
-      dataIndex: 'description',
-      key: 'description',
+      dataIndex: 'describe',
     },
     {
+      key: 'type',
+      title: '类型',
+      dataIndex: 'type',
+    },
+    {
+      title: '状态',
+      key: 'status',
+      dataIndex: 'status',
+    },
+    {
+      key: 'params',
       title: 'Params',
       dataIndex: 'params',
-      key: 'params',
     },
     {
-      title: '基本信息',
-      dataIndex: 'basicInfo',
-      key: 'basicInfo',
+      title: '需求',
+      key: 'demand',
+      dataIndex: 'demand',
     },
     {
-      title: '负责人',
-      dataIndex: 'duty',
-      key: 'duty',
+      key: 'demand',
+      title: '操作版本',
+      dataIndex: 'demand',
+    },
+    {
+      title: 'PM负责人',
+      key: 'principalPM',
+      dataIndex: 'principalPM',
     },
     {
       title: '添加时间',
       dataIndex: 'createtime',
       key: 'createtime',
-    },
-    {
-      title: '创建人',
-      dataIndex: 'createby',
-      key: 'createby',
     },
     {
       title: '操作',
@@ -110,7 +129,7 @@ export default function CreatePoint() {
     console.log(values)
   }
 
-  function handleMenuClick(e) {
+  function handleMenuClick(e: ClickParam) {
     console.log('click', e)
   }
 
@@ -183,10 +202,9 @@ export default function CreatePoint() {
   }
 
   return (
-    <Content crumbData={[{ label: '', value: '埋点管理' }]}>
+    <Content crumbData={[{ value: '埋点管理' }]}>
       {renderForm()}
-      <Table
-        bordered
+      <CustomTable
         rowKey="id"
         dataSource={data}
         columns={columns}

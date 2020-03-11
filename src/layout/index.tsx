@@ -68,7 +68,7 @@ export default function DefaultLayout() {
             <Redirect to="/404" />
           </Switch>
         </Content>
-        <LayoutFooter />
+        {/* <LayoutFooter /> */}
       </Layout>
     </Layout>
   )
