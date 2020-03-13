@@ -21,7 +21,7 @@ exports.ALIAS = {
 /** devServer */
 /** 指定使用一个 host。默认是 localhost */
 exports.HOST = ''
-exports.PORT = 8000
+exports.PORT = 4399
 /** 是否自动打开页面 */
 exports.OPEN = false
 /** 精确控制要显示的 bundle 信息(只在发生错误或有新的编译时输出)  */
