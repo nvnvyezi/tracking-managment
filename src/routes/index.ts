@@ -7,6 +7,7 @@ import Tracking from '@/pages/tracking'
 import Attributes from '@/pages/attributes'
 import CreateTrack from '@/pages/create-track'
 import EventAnalyze from '@/pages/event-analyze'
+import CreateAttributes from '@/pages/create-attributes'
 
 // // 通用
 // const ButtonView = lazy(() =>
@@ -72,35 +73,42 @@ import EventAnalyze from '@/pages/event-analyze'
 
 const routes = [
   {
-    path: '/home/welcome',
+    path: '/welcome',
     name: '欢迎',
     exact: true,
     auth: false,
     component: Welcome,
   },
   {
-    path: '/home/track/show',
-    name: '埋点集合',
+    path: '/track/show',
+    name: '埋点列表',
     exact: true,
     auth: false,
     component: Tracking,
   },
   {
-    path: '/home/track/create',
+    path: '/track/create',
     name: '新增埋点',
     exact: true,
     auth: false,
     component: CreateTrack,
   },
   {
-    path: '/home/track/attributes',
-    name: '属性管理',
+    path: '/attribute/show',
+    name: '属性列表',
     exact: true,
     auth: false,
     component: Attributes,
   },
   {
-    path: '/home/event-analyze',
+    path: '/attribute/create',
+    name: '新增属性',
+    exact: true,
+    auth: false,
+    component: CreateAttributes,
+  },
+  {
+    path: '/event-analyze',
     name: '事件分析',
     exact: true,
     auth: false,

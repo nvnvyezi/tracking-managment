@@ -53,16 +53,13 @@ export default function DefaultLayout() {
             {routes.map(item => (
               <Route
                 key={item.path}
-                path={item.path}
+                path={`/management${item.path}`}
                 exact={item.exact}
-                render={() => {
-                  const Wrapper = item.component
-                  return (
-                    <Suspense fallback={<div>loading</div>}>
-                      <Wrapper />
-                    </Suspense>
-                  )
-                }}
+                render={() => (
+                  <Suspense fallback={<div>loading</div>}>
+                    <item.component />
+                  </Suspense>
+                )}
               />
             ))}
             <Redirect to="/404" />

@@ -31,19 +31,16 @@ export default function CustomMenu({ menu = [] }: ICustomMenuProps) {
 
   // 循环遍历数组中的子项 subs ，生成子级 menu
   function renderSubMenu({ key, Icon, title, subs }: ICustomMenuItem) {
+    const ComponentTitle = (
+      <>
+        {Icon && <Icon />}
+        <span>{title}</span>
+      </>
+    )
+
     return (
-      <Menu.SubMenu
-        key={key}
-        title={
-          <span>
-            {Icon && <Icon />}
-            <span>{title}</span>
-          </span>
-        }
-      >
-        {subs?.map(item =>
-          !!item.subs?.length ? renderSubMenu(item) : renderMenuItem(item),
-        )}
+      <Menu.SubMenu key={key} title={ComponentTitle}>
+        {subs?.map(item => renderMenuItem(item))}
       </Menu.SubMenu>
     )
   }

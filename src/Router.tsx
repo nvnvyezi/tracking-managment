@@ -34,8 +34,8 @@ export default function App() {
         <Route path="/" exact render={() => <Redirect to="/login" />} />
         <Route
           exact
-          path="/home"
-          render={() => <Redirect to="/home/welcome" />}
+          path="/management"
+          render={() => <Redirect to="/management/welcome" />}
         />
         {/* <Route path="/500" component={View500} /> */}
         <Route
@@ -48,7 +48,7 @@ export default function App() {
           )}
         />
         <Route
-          path="/home"
+          path="/management"
           render={() => (
             <Suspense fallback={<Loading />}>
               <Home />

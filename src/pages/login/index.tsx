@@ -38,7 +38,7 @@ export default function Login() {
     const cacheToken = localStorage.getItem('token')
 
     if (cacheToken && cacheUserName) {
-      history.replace('/home/welcome')
+      history.replace('/management/welcome')
       return
     }
     message.info('欢迎使用后台管理平台')
@@ -62,7 +62,7 @@ export default function Login() {
         console.log(res)
         localStorage.setItem('username', JSON.stringify(res.data?.username))
         message.success('登录成功!')
-        history.push('/home/welcome')
+        history.push('/management/welcome')
       })
       .catch(err => {
         setLoading(false)
