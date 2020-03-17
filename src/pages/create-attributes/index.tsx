@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Input, Button, Radio, message } from 'antd'
-
+import { RedoOutlined } from '@ant-design/icons'
 import * as API from '@/constants/api'
 
 import axios from '@/utils/axios'
@@ -24,7 +24,12 @@ export default function CreateTrack() {
   }
 
   return (
-    <Content crumbData={[{ value: '新增属性' }]}>
+    <Content
+      crumbData={[
+        { label: '/management/attribute/show', value: '属性列表' },
+        { value: '新增属性' },
+      ]}
+    >
       <div className="card-style wrapper-create">
         <h4>属性相关信息</h4>
         <Form
@@ -73,7 +78,10 @@ export default function CreateTrack() {
             <Input allowClear placeholder="请输入属性创建者" />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 6 }}>
-            <Button onClick={handleReset}>重置</Button>
+            <Button onClick={handleReset}>
+              <RedoOutlined />
+              重置
+            </Button>
             <Button type="primary" htmlType="submit" style={{ marginLeft: 15 }}>
               提交
             </Button>

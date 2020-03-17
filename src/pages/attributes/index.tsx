@@ -1,17 +1,28 @@
 import React from 'react'
-
-import Content from '@/layout/content'
-import { Table, Input, Button } from 'antd'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
+import { Input, Button, Form, Select, message } from 'antd'
+import {
+  RedoOutlined,
+  EditOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+} from '@ant-design/icons'
 import { ColumnProps } from 'antd/es/table'
 
-import { attrSourceData } from '../../../mocks/attributes'
+import * as API from '@/constants/api'
 
-const { Search } = Input
+import axios from '@/utils/axios'
+
+import Content from '@/layout/content'
+import CustomTable from '@/components/custom-table'
+
+const { Option } = Select
 
 import './index.scss'
 interface IAttrData {
-  param: string
+  name: string
   key: number
   min: string
   max: string
@@ -23,131 +34,161 @@ interface IAttrData {
 }
 
 export default function Attributes() {
-  const data: IAttrData[] = attrSourceData
+  const [form] = Form.useForm()
 
-  const handleEdit = (item: IAttrData) => {
+  const [dataSource, setDataSource] = React.useState([])
+
+  const handleEdit = (item: IAttrData) => () => {
     // edit
     console.log(item)
   }
 
-  const handleDelete = (item: IAttrData) => {
-    // delete
-    console.log(item)
+  const handleDelete = (item: IAttrData) => () => {
+    axios
+      .delete(API.attribute, { data: { name: item.name } })
+      .then(() => {
+        message.success('删除成功')
+      })
+      .catch(() => {
+        message.error('非法操作')
+      })
   }
 
   const columns: ColumnProps<IAttrData>[] = [
     {
-      title: 'Param',
-      dataIndex: 'param',
-      key: 'param',
-      align: 'center',
-      width: 120,
-    },
-    {
-      title: '最小值',
-      dataIndex: 'min',
-      key: 'min',
-      align: 'center',
-      width: 100,
-    },
-    {
-      title: '最大值',
-      dataIndex: 'max',
-      key: 'max',
-      align: 'center',
-      width: 100,
-    },
-    {
-      title: 'value',
-      dataIndex: 'value',
-      key: 'value',
-      align: 'center',
+      key: 'name',
+      title: 'name',
+      dataIndex: 'name',
     },
     {
       title: '类型',
       dataIndex: 'type',
       key: 'type',
-      align: 'center',
     },
     {
       title: '含义',
-      dataIndex: 'meaning',
-      key: 'meaning',
-      align: 'center',
+      key: 'describe',
+      dataIndex: 'describe',
     },
     {
-      title: '添加时间',
-      dataIndex: 'createtime',
-      key: 'createtime',
-      align: 'center',
-      width: 120,
+      title: '创建时间',
+      key: 'createTime',
+      dataIndex: 'createTime',
+      render: time => dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '创建人',
-      dataIndex: 'createby',
-      key: 'createby',
-      align: 'center',
+      key: 'creator',
+      dataIndex: 'creator',
     },
     {
       title: '操作',
       key: 'action',
       dataIndex: 'action',
       align: 'center',
-      // eslint-disable-next-line react/display-name
-      render: (item: IAttrData) => (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <EditOutlined onClick={() => handleEdit(item)} />
+      render: (_, row) => (
+        <>
+          <EditOutlined onClick={handleEdit(row)} />
           <DeleteOutlined
             style={{ marginLeft: 20 }}
-            onClick={() => handleDelete(item)}
+            onClick={handleDelete(row)}
           />
-        </div>
+        </>
       ),
     },
   ]
 
-  return (
-    <Content
-      crumbData={[
-        { label: '/home/welcome', value: '首页' },
-        { label: '', value: '属性管理' },
-      ]}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row-reverse',
-          marginBottom: 20,
-        }}
-      >
-        <Button
-          type="primary"
-          style={{ marginLeft: 10 }}
-          onClick={() => {
-            // Todo
-          }}
+  const onFinish = (values = {}) => {
+    axios.get(API.attribute, { params: values }).then(res => {
+      setDataSource(res.data?.data)
+    })
+  }
+
+  const handleReset = () => {
+    form.resetFields()
+    onFinish()
+  }
+
+  React.useEffect(() => {
+    axios.get(API.attribute).then(res => {
+      setDataSource(res.data?.data)
+    })
+  }, [])
+
+  function renderForm() {
+    return (
+      <div className="card-style">
+        <Form
+          layout="inline"
+          name="tracking"
+          onFinish={onFinish}
+          form={form}
+          initialValues={{ type: '' }}
         >
-          批量添加
-        </Button>
-        <Button
-          type="primary"
-          style={{ marginLeft: 10 }}
-          onClick={() => {
-            // Todo
-          }}
-        >
-          添加
-        </Button>
-        <Search
-          style={{ width: 300 }}
-          placeholder="Param/含义"
-          enterButton
-          onSearch={() => {
-            // Todo
-          }}
-        ></Search>
+          <Form.Item name="creator" label="创建者">
+            <Input
+              style={{ width: 260 }}
+              placeholder="请输入创建者名字，支持模糊搜索"
+            />
+          </Form.Item>
+          <Form.Item name="name" label="属性名称">
+            <Input
+              style={{ width: 260 }}
+              placeholder="请输入属性名称，支持模糊搜索"
+            />
+          </Form.Item>
+          <Form.Item name="type" label="类型">
+            <Select style={{ width: 140 }}>
+              <Option value="">全部</Option>
+              <Option value="string">string</Option>
+              <Option value="number">number</Option>
+              <Option value="boolean">boolean</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ marginLeft: 50 }}>
+              <SearchOutlined />
+              查询
+            </Button>
+            <Button
+              type="primary"
+              onClick={handleReset}
+              style={{ marginLeft: 10 }}
+            >
+              <RedoOutlined />
+              重置
+            </Button>
+            <Link to="create">
+              <Button
+                type="primary"
+                onClick={handleReset}
+                style={{ marginLeft: 10 }}
+              >
+                <PlusOutlined />
+                新增
+              </Button>
+            </Link>
+          </Form.Item>
+        </Form>
+        <style jsx>{`
+          div {
+            margin-bottom: 20px;
+            padding: 40px 30px;
+          }
+        `}</style>
       </div>
-      <Table dataSource={data} columns={columns} bordered />
+    )
+  }
+
+  return (
+    <Content crumbData={[{ value: '属性列表' }]}>
+      {renderForm()}
+      <CustomTable
+        bordered
+        rowKey="name"
+        columns={columns}
+        dataSource={dataSource}
+      />
     </Content>
   )
 }

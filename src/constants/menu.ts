@@ -1,5 +1,5 @@
 import { ICustomMenu } from '@/interface/global'
-import { HomeOutlined } from '@ant-design/icons'
+import { HomeOutlined, ClusterOutlined } from '@ant-design/icons'
 
 const menu: ICustomMenu = [
   {
@@ -20,8 +20,7 @@ const menu: ICustomMenu = [
   {
     title: '属性管理',
     key: '/management/attributes',
-    // Icon: 'control',
-    Icon: HomeOutlined,
+    Icon: ClusterOutlined,
     subs: [
       { title: '属性列表', key: '/management/attribute/show' },
       { title: '新增属性', key: '/management/attribute/create' },

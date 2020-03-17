@@ -20,7 +20,7 @@ export default function Content({
   className,
   crumbData,
 }: IContentProps) {
-  let crumb: ICrumb[] = [{ label: '/home/welcome', value: '首页' }]
+  let crumb: ICrumb[] = [{ label: '/management/welcome', value: '首页' }]
   if (crumbData) {
     crumb = crumb.concat(crumbData)
   }
