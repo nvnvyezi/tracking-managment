@@ -37,7 +37,7 @@ instance.interceptors.response.use(
       } catch (error) {
         console.log(`authorization store error`, error)
       }
-      return Promise.resolve(response)
+      return Promise.resolve(response.data)
     } else {
       return Promise.reject(response)
     }
