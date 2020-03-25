@@ -1,7 +1,17 @@
 import React from 'react'
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
-import { Input, Button, Form, Table, Select, Modal, message, Radio } from 'antd'
+import {
+  Form,
+  Table,
+  Input,
+  Modal,
+  Radio,
+  Button,
+  Select,
+  message,
+  Popconfirm,
+} from 'antd'
 import {
   RedoOutlined,
   EditOutlined,
@@ -20,8 +30,6 @@ import Content from '@/layout/content'
 
 const { Option } = Select
 const { TextArea } = Input
-
-import './index.scss'
 
 interface IAttributeRes {
   createTime: Date
@@ -98,7 +106,6 @@ export default function Attributes() {
   }
 
   const handleDelete = (item: IAttributeRes) => () => {
-    setButtonLoading(true)
     axios
       .delete(API.attribute, { data: { name: item.name } })
       .then(() => {
@@ -151,10 +158,14 @@ export default function Attributes() {
       render: (_, row) => (
         <>
           <EditOutlined onClick={handleEdit(row)} />
-          <DeleteOutlined
-            style={{ marginLeft: 20 }}
-            onClick={handleDelete(row)}
-          />
+          <Popconfirm
+            okText="确认"
+            cancelText="取消"
+            onConfirm={handleDelete(row)}
+            title={`确认删除${row.name}吗?`}
+          >
+            <DeleteOutlined style={{ marginLeft: 20 }} />
+          </Popconfirm>
         </>
       ),
     },
@@ -204,6 +215,12 @@ export default function Attributes() {
             </Select>
           </Form.Item>
           <Form.Item>
+            <Link to="create">
+              <Button type="primary" style={{ marginLeft: 20 }}>
+                <PlusOutlined />
+                新建
+              </Button>
+            </Link>
             <Button
               type="primary"
               htmlType="submit"
@@ -222,17 +239,6 @@ export default function Attributes() {
               <RedoOutlined />
               重置
             </Button>
-            <Link to="create">
-              <Button
-                type="primary"
-                onClick={handleReset}
-                loading={buttonLoading}
-                style={{ marginLeft: 20 }}
-              >
-                <PlusOutlined />
-                新增
-              </Button>
-            </Link>
           </Form.Item>
         </Form>
         <style jsx>{`

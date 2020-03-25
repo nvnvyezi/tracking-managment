@@ -1,33 +1,77 @@
 import React from 'react'
-import { Button, Select, Form, Row, Col, Dropdown, Menu } from 'antd'
-import { SearchOutlined, RedoOutlined, DownOutlined } from '@ant-design/icons'
+import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
+import {
+  Row,
+  Col,
+  Menu,
+  Form,
+  Input,
+  Table,
+  Button,
+  Select,
+  message,
+  Dropdown,
+  Popconfirm,
+} from 'antd'
+import {
+  RedoOutlined,
+  DownOutlined,
+  EditOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+  PoweroffOutlined,
+} from '@ant-design/icons'
 
 import { ClickParam } from 'antd/lib/menu'
 import { ColumnProps } from 'antd/es/table'
+import { TablePaginationConfig } from 'antd/lib/table'
 
-import { formData } from '@/constants/tracking'
+import axios from '@/utils/axios'
+import * as API from '@/constants/api'
+import { formData, statusMap, typeMap } from '@/constants/tracking'
 
 import Content from '@/layout/content'
 
-import CustomTable from '@/components/custom-table'
+interface IParamItem {
+  name: string
+  type: 'string' | 'boolean' | 'number'
+  describe: string
+}
 
-import { pointSourceData } from '../../../mocks/creat-tracking'
-
-interface IPoint {
-  id: string
-  duty: string
-  params: string
-  createby: string
-  eventName: string
-  basicInfo: string
-  createtime: string
-  description: string
+interface ITrackingRes {
+  event: string
+  demand: string
+  version: string
+  describe: string
+  principalPM: string
+  params: IParamItem[]
+  principalQA?: string
+  principalRD?: string
+  principalFE?: string
+  principalIos?: string
+  type: 'normal' | 'kernel'
+  principalAndroid?: string
+  status: 0 | 1 | 2 | 3 | 4 | 5
+  system: 'ios' | 'web' | 'android' | 'web'
 }
 
 const { Option } = Select
 
 export default function CreatePoint() {
-  const data: IPoint[] = pointSourceData
+  const [form] = Form.useForm()
+
+  const [versionList, setVersionList] = React.useState([])
+  const [buttonLoading, setButtonLoading] = React.useState(false)
+  const [dataSource, setDataSource] = React.useState<ITrackingRes[]>([])
+  const [pagination, setPagination] = React.useState<TablePaginationConfig>({
+    total: 0,
+    current: 1,
+    pageSize: 10,
+    showTotal: total => `共${total}条数据`,
+  })
+
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
 
   const rowSelection = {
@@ -38,100 +82,186 @@ export default function CreatePoint() {
     },
   }
 
-  const handleEdit = (item: IPoint) => {
-    // edit
-    console.log(item)
+  const handleTableChange = React.useCallback(
+    paginationNext => {
+      const { current, pageSize } = paginationNext
+      const skip = (current - 1) * pageSize
+      const values = form.getFieldsValue()
+      setButtonLoading(true)
+
+      axios
+        .get(API.tracking, { params: { ...values, skip, limit: pageSize } })
+        .then(res => {
+          setDataSource(res?.data?.list)
+          setPagination(pre => ({ ...pre, current, total: res?.data?.total }))
+        })
+        .finally(() => {
+          setButtonLoading(false)
+        })
+    },
+    [form],
+  )
+
+  const handleDelete = (item: ITrackingRes) => () => {
+    axios
+      .delete(API.tracking, { data: { demand: item.demand } })
+      .then(() => {
+        message.success('删除成功')
+        const { total = 0, pageSize = 10, current } = pagination
+        const endPage = Math.ceil(total / pageSize)
+        if (current === endPage && total % pageSize === 1) {
+          handleTableChange({ current: current - 1, pageSize })
+        } else {
+          handleTableChange(pagination)
+        }
+      })
+      .catch(() => {
+        message.error('非法操作')
+      })
   }
 
-  const handleDelete = (item: IPoint) => {
-    // delete
-    console.log(item)
-  }
-
-  const handleOffline = (item: IPoint) => {
+  const handleOffline = (item: ITrackingRes) => () => {
     // offline
     console.log(item)
   }
 
-  const columns: ColumnProps<IPoint>[] = [
+  const columns: ColumnProps<ITrackingRes>[] = [
     {
-      title: '操作系统',
-      key: 'system',
-      dataIndex: 'system',
-    },
-    {
+      width: 120,
       key: 'event',
+      fixed: 'left',
       title: '事件名',
       dataIndex: 'event',
     },
     {
+      width: 140,
+      title: '需求',
+      fixed: 'left',
+      key: 'demand',
+      dataIndex: 'demand',
+    },
+    {
+      width: 100,
+      key: 'system',
+      title: '操作系统',
+      dataIndex: 'system',
+    },
+    {
+      width: 200,
       key: 'describe',
       title: '事件描述',
       dataIndex: 'describe',
     },
     {
+      width: 100,
       key: 'type',
       title: '类型',
       dataIndex: 'type',
+      render: type => typeMap.find(item => item.value === type)?.label,
     },
     {
+      width: 100,
       title: '状态',
       key: 'status',
       dataIndex: 'status',
+      render: status =>
+        statusMap.find(item => item.value === Number(status))?.label,
     },
     {
+      width: 400,
       key: 'params',
       title: 'Params',
       dataIndex: 'params',
+      render: value =>
+        value.map((item, index) => (
+          <div key={item._id}>
+            <h5>参数{index + 1}：</h5>
+            <p>
+              <span className="name">{item.name}</span>
+              <span className="type">{item.type}</span>
+              {item.describe}
+            </p>
+            <style jsx>{`
+              .name,
+              .type {
+                display: inline-block;
+                min-width: 100px;
+                margin-right: 20px;
+              }
+              .type {
+                min-width: 50px;
+              }
+            `}</style>
+          </div>
+        )),
     },
     {
-      title: '需求',
-      key: 'demand',
-      dataIndex: 'demand',
-    },
-    {
-      key: 'demand',
+      width: 100,
+      key: 'version',
       title: '操作版本',
-      dataIndex: 'demand',
+      dataIndex: 'version',
     },
     {
+      width: 100,
       title: 'PM负责人',
       key: 'principalPM',
       dataIndex: 'principalPM',
     },
     {
+      width: 200,
       title: '添加时间',
-      dataIndex: 'createtime',
-      key: 'createtime',
+      key: 'createTime',
+      dataIndex: 'createTime',
+      render: time => dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
+      width: 140,
       title: '操作',
-      dataIndex: 'action',
       key: 'action',
+      fixed: 'right',
       align: 'center',
-      render: item => (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button type="link" onClick={() => handleEdit(item)}>
-            编辑
-          </Button>
-          <Button type="link" onClick={() => handleOffline(item)}>
-            下线
-          </Button>
-          <Button type="link" onClick={() => handleDelete(item)}>
-            删除
-          </Button>
-        </div>
+      render: (_, row) => (
+        <>
+          {[0, 1, 4, 5].includes(row.status) && (
+            <Link to={`create?demand=${row.demand}`}>
+              <EditOutlined />
+            </Link>
+          )}
+          {[3].includes(row.status) && (
+            <PoweroffOutlined onClick={handleOffline(row)} />
+          )}
+          <Popconfirm
+            okText="确认"
+            cancelText="取消"
+            onConfirm={handleDelete(row)}
+            title={`确认删除${row.demand}的埋点吗?`}
+          >
+            <DeleteOutlined style={{ marginLeft: 20 }} />
+          </Popconfirm>
+        </>
       ),
     },
   ]
 
-  const onFinish = (values: { [name: string]: any }) => {
-    console.log(values)
-  }
-
   function handleMenuClick(e: ClickParam) {
     console.log('click', e)
   }
+
+  const onFinish = () => {
+    handleTableChange({ current: 1, pageSize: 10 })
+  }
+
+  const handleReset = () => {
+    form.resetFields()
+    onFinish()
+  }
+
+  React.useEffect(() => {
+    handleTableChange({ current: 1, pageSize: 10 })
+    axios.get(API.trackingVersion).then(res => {
+      setVersionList(res?.data || [])
+    })
+  }, [handleTableChange])
 
   function renderForm() {
     const menu = (
@@ -144,7 +274,7 @@ export default function CreatePoint() {
     )
     return (
       <div className="card-style">
-        <Form name="tracking" onFinish={onFinish}>
+        <Form form={form} name="tracking" onFinish={onFinish}>
           <Row gutter={24}>
             {formData.map(form => (
               <Col key={form.key} span={8}>
@@ -165,25 +295,99 @@ export default function CreatePoint() {
               </Col>
             ))}
           </Row>
+          <Row gutter={24}>
+            <Col span={8}>
+              <Form.Item
+                name="demand"
+                label="需求名称"
+                labelCol={{ span: 6 }}
+                wrapperCol={{ span: 17, offset: 1 }}
+                rules={[
+                  {
+                    max: 30,
+                    whitespace: true,
+                    message: '长度不大于30',
+                  },
+                ]}
+              >
+                <Input allowClear placeholder="请输入埋点所属需求" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                name="event"
+                label="事件名称"
+                labelCol={{ span: 6 }}
+                wrapperCol={{ span: 17, offset: 1 }}
+                rules={[
+                  {
+                    max: 40,
+                    whitespace: true,
+                    pattern: /^\w{1,40}$/,
+                    message: '仅支持字母，数字，下划线且长度不大于40',
+                  },
+                ]}
+              >
+                <Input allowClear placeholder="请输入事件名称" />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item
+                label="所属版本"
+                name="version"
+                labelCol={{ span: 6 }}
+                wrapperCol={{ span: 17, offset: 1 }}
+                rules={[
+                  {
+                    whitespace: true,
+                    pattern: /^(\d{1,2}\.){2}\d{1,2}$/,
+                    message: '版本号格式为 xx.xx.xx',
+                  },
+                ]}
+              >
+                <Select>
+                  {versionList.map(item => (
+                    <Option value={item} key={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Link to="create">
+                  <Button type="primary">
+                    <PlusOutlined />
+                    新建
+                  </Button>
+                </Link>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  loading={buttonLoading}
+                  style={{ marginLeft: 10 }}
+                >
                   <SearchOutlined />
                   查询
                 </Button>
                 <Button
                   type="primary"
+                  onClick={handleReset}
+                  loading={buttonLoading}
                   style={{ marginLeft: 10 }}
-                  // onClick={() => {
-                  //   form.resetFields();
-                  // }}
                 >
                   <RedoOutlined />
                   重置
                 </Button>
                 <Dropdown overlay={menu}>
-                  <Button type="primary" style={{ marginLeft: 10 }}>
+                  <Button
+                    type="primary"
+                    loading={buttonLoading}
+                    style={{ marginLeft: 10 }}
+                  >
                     批量操作 <DownOutlined />
                   </Button>
                 </Dropdown>
@@ -204,12 +408,18 @@ export default function CreatePoint() {
   return (
     <Content crumbData={[{ value: '埋点管理' }]}>
       {renderForm()}
-      <CustomTable
-        rowKey="id"
-        dataSource={data}
-        columns={columns}
-        rowSelection={rowSelection}
-      />
+      <div className="card-style">
+        <Table
+          bordered
+          rowKey="demand"
+          columns={columns}
+          scroll={{ x: 800 }}
+          dataSource={dataSource}
+          pagination={pagination}
+          rowSelection={rowSelection}
+          onChange={handleTableChange}
+        />
+      </div>
     </Content>
   )
 }

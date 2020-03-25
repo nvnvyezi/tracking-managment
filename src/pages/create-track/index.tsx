@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Form, Input, Button, Radio, message } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import * as API from '@/constants/api'
 import axios from '@/utils/axios'
@@ -12,21 +12,74 @@ const { TextArea } = Input
 
 export default function CreateTrack() {
   const history = useHistory()
+  const [form] = Form.useForm()
+
+  const [isUpdate, setIsUpdate] = React.useState(false)
 
   const onFinash = values => {
+    if (isUpdate) {
+      axios.patch(API.tracking, values).then(() => {
+        message.success('属性更新成功')
+        history.push('show')
+      })
+      return
+    }
     axios.post(API.tracking, values).then(() => {
       message.success('埋点创建成功')
       history.push('show')
     })
   }
 
+  React.useEffect(() => {
+    const demand = history.location.search.match(/\?demand=(.*)/)?.[1]
+    if (demand) {
+      setIsUpdate(true)
+      axios
+        .get(API.tracking, { params: { demand: decodeURIComponent(demand) } })
+        .then(res => {
+          const {
+            type,
+            event,
+            params,
+            demand,
+            system,
+            version,
+            describe,
+            principalQA,
+            principalRD,
+            principalPM,
+            principalFE,
+            principalIos,
+            principalAndroid,
+          } = res.data?.list?.[0] || {}
+
+          form.setFieldsValue({
+            type,
+            event,
+            params,
+            demand,
+            system,
+            version,
+            describe,
+            principalQA,
+            principalRD,
+            principalPM,
+            principalFE,
+            principalIos,
+            principalAndroid,
+          })
+        })
+    }
+  }, [form, history.location.search])
+
   return (
     <Content crumbData={[{ value: '新增埋点' }]}>
       <div className="card-style wrapper-create">
         <h4>埋点相关信息</h4>
         <Form
-          labelCol={{ span: 6 }}
+          form={form}
           onFinish={onFinash}
+          labelCol={{ span: 6 }}
           initialValues={{ system: 'ios', type: 'normal' }}
         >
           <Form.Item
@@ -96,8 +149,8 @@ export default function CreateTrack() {
             />
           </Form.Item>
           <Form.Item
-            label="需求"
             name="demand"
+            label="需求名称"
             rules={[
               {
                 max: 30,
@@ -107,7 +160,11 @@ export default function CreateTrack() {
               },
             ]}
           >
-            <Input allowClear placeholder="请输入埋点所属需求" />
+            <Input
+              allowClear
+              disabled={isUpdate}
+              placeholder="请输入埋点所属需求"
+            />
           </Form.Item>
           <Form.Item
             label="PM负责人"
@@ -124,7 +181,7 @@ export default function CreateTrack() {
             <Input allowClear placeholder="请输入PM负责人" />
           </Form.Item>
           <Form.List name="params">
-            {(fields, { add, remove, move }) => (
+            {(fields, { add, remove }) => (
               <>
                 {fields.map((field, index) => (
                   // <ComponentParams
@@ -136,11 +193,22 @@ export default function CreateTrack() {
                   //   index={index + 2}
                   // />
                   <Form.Item
-                    {...field}
+                    required
                     key={field.key}
                     label={`参数${index + 1}`}
                   >
-                    <Input />
+                    <Form.Item
+                      {...field}
+                      rules={[{ required: true, whitespace: true }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <DeleteOutlined
+                      onClick={() => {
+                        remove(field.name)
+                      }}
+                      style={{ marginLeft: 10 }}
+                    />
                   </Form.Item>
                 ))}
                 <Form.Item wrapperCol={{ offset: 6 }}>
