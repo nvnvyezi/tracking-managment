@@ -196,7 +196,7 @@ export default function Attributes() {
             />
           </Form.Item>
           <Form.Item name="type" label="类型">
-            <Select style={{ width: 100 }}>
+            <Select style={{ width: 140 }}>
               <Option value="">全部</Option>
               <Option value="string">string</Option>
               <Option value="number">number</Option>
@@ -208,7 +208,7 @@ export default function Attributes() {
               type="primary"
               htmlType="submit"
               loading={buttonLoading}
-              style={{ marginLeft: 50 }}
+              style={{ marginLeft: 30 }}
             >
               <SearchOutlined />
               查询
@@ -217,7 +217,7 @@ export default function Attributes() {
               type="primary"
               onClick={handleReset}
               loading={buttonLoading}
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 20 }}
             >
               <RedoOutlined />
               重置
@@ -227,7 +227,7 @@ export default function Attributes() {
                 type="primary"
                 onClick={handleReset}
                 loading={buttonLoading}
-                style={{ marginLeft: 10 }}
+                style={{ marginLeft: 20 }}
               >
                 <PlusOutlined />
                 新增

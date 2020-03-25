@@ -57,6 +57,9 @@ instance.interceptors.response.use(
         break
       case 404:
         break
+      case 422:
+        msg = '字段验证失败'
+        break
       case 500:
         break
       default:

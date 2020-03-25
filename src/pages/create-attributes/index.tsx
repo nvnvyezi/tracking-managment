@@ -44,6 +44,7 @@ export default function CreateTrack() {
             rules={[
               {
                 required: true,
+                whitespace: true,
                 pattern: /^\w{1,20}$/,
                 message: '仅支持字母，数字，下划线且长度不大于20',
               },
@@ -54,7 +55,14 @@ export default function CreateTrack() {
           <Form.Item
             label="属性描述"
             name="describe"
-            rules={[{ max: 100, required: true, message: '属性描述格式有误' }]}
+            rules={[
+              {
+                max: 100,
+                required: true,
+                whitespace: true,
+                message: '属性描述格式有误',
+              },
+            ]}
           >
             <TextArea
               allowClear
@@ -73,7 +81,14 @@ export default function CreateTrack() {
           <Form.Item
             label="创建者"
             name="creator"
-            rules={[{ max: 20, required: true, message: '输入格式有误' }]}
+            rules={[
+              {
+                max: 20,
+                required: true,
+                whitespace: true,
+                message: '输入格式有误',
+              },
+            ]}
           >
             <Input allowClear placeholder="请输入属性创建者" />
           </Form.Item>
