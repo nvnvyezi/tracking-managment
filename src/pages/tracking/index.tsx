@@ -8,6 +8,7 @@ import {
   Form,
   Input,
   Table,
+  Modal,
   Button,
   Select,
   message,
@@ -21,7 +22,8 @@ import {
   PlusOutlined,
   DeleteOutlined,
   SearchOutlined,
-  PoweroffOutlined,
+  InteractionOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons'
 
 import { ClickParam } from 'antd/lib/menu'
@@ -58,6 +60,7 @@ interface ITrackingRes {
 }
 
 const { Option } = Select
+const { confirm } = Modal
 
 export default function CreatePoint() {
   const [form] = Form.useForm()
@@ -71,6 +74,8 @@ export default function CreatePoint() {
     pageSize: 10,
     showTotal: total => `共${total}条数据`,
   })
+
+  const statusUpdate = React.useRef(-1)
 
   const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
 
@@ -120,9 +125,39 @@ export default function CreatePoint() {
       })
   }
 
-  const handleOffline = (item: ITrackingRes) => () => {
-    // offline
-    console.log(item)
+  const handleChangeStatus = ({ demand, status }: ITrackingRes) => () => {
+    confirm({
+      okText: '确认',
+      cancelText: '取消',
+      title: `修改${demand}的埋点状态`,
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <div>
+          <span>埋点状态：</span>
+          <Select
+            style={{ marginTop: 20 }}
+            defaultValue={status}
+            onChange={value => {
+              statusUpdate.current = value
+            }}
+          >
+            {statusMap.slice(1).map(item => (
+              <Option value={item.value} key={item.value}>
+                {item.label}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      ),
+      onOk() {
+        axios
+          .patch(API.trackingStatus, { demand, status: statusUpdate.current })
+          .then(() => {
+            message.success('状态修改成功')
+            handleTableChange(pagination)
+          })
+      },
+    })
   }
 
   const columns: ColumnProps<ITrackingRes>[] = [
@@ -227,16 +262,17 @@ export default function CreatePoint() {
               <EditOutlined />
             </Link>
           )}
-          {[3].includes(row.status) && (
-            <PoweroffOutlined onClick={handleOffline(row)} />
-          )}
+          <InteractionOutlined
+            style={{ marginLeft: 15 }}
+            onClick={handleChangeStatus(row)}
+          />
           <Popconfirm
             okText="确认"
             cancelText="取消"
             onConfirm={handleDelete(row)}
             title={`确认删除${row.demand}的埋点吗?`}
           >
-            <DeleteOutlined style={{ marginLeft: 20 }} />
+            <DeleteOutlined style={{ marginLeft: 15 }} />
           </Popconfirm>
         </>
       ),
@@ -370,7 +406,7 @@ export default function CreatePoint() {
                   loading={buttonLoading}
                   style={{ marginLeft: 10 }}
                 >
-                  <SearchOutlined />
+                  {!buttonLoading && <SearchOutlined />}
                   查询
                 </Button>
                 <Button
@@ -379,7 +415,7 @@ export default function CreatePoint() {
                   loading={buttonLoading}
                   style={{ marginLeft: 10 }}
                 >
-                  <RedoOutlined />
+                  {!buttonLoading && <RedoOutlined />}
                   重置
                 </Button>
                 <Dropdown overlay={menu}>

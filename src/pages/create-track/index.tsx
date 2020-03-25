@@ -18,8 +18,8 @@ export default function CreateTrack() {
 
   const onFinash = values => {
     if (isUpdate) {
-      axios.patch(API.tracking, values).then(() => {
-        message.success('属性更新成功')
+      axios.patch(API.tracking, { ...values, status: 1 }).then(() => {
+        message.success('埋点信息修改成功')
         history.push('show')
       })
       return
