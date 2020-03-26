@@ -1,27 +1,29 @@
 import * as React from 'react'
-import { Link, useHistory } from 'react-router-dom'
 import { JSEncrypt } from 'jsencrypt'
+import { Link, useHistory } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
-import { Form, Input, Button, Divider, Checkbox, message } from 'antd'
+import {
+  Form,
+  Input,
+  Button,
+  Divider,
+  message,
+  Checkbox,
+  notification,
+} from 'antd'
 
-import axios from '@/utils/axios'
 import * as API from '@/constants/api'
 import * as RSA from '@/constants/rsa'
+
+import axios from '@/utils/axios'
 
 import './index.less'
 
 interface ILoginAxios {
+  status: boolean
   username: string
   remember: boolean
-  status: boolean
-}
-
-interface IFormValues {
-  // username: string
-  // password: string
-  // remember: boolean
-  [name: string]: string | boolean
 }
 
 export default function Login() {
@@ -29,22 +31,28 @@ export default function Login() {
   const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
-    // notification.open({
-    //   message: '欢迎使用后台管理平台',
-    //   duration: null,
-    //   description: '账号 admin(管理员) 其他(游客) 密码随意',
-    // })
-    const cacheUserName = localStorage.getItem('username')
-    const cacheToken = localStorage.getItem('token')
+    notification.open({
+      message: '欢迎使用数据分析管理平台',
+      description: '无账号请进行注册或者联系管理员',
+    })
+  }, [])
 
-    if (cacheToken && cacheUserName) {
-      history.replace('/management/welcome')
+  React.useEffect(() => {
+    const cacheToken = localStorage.getItem('token')
+    const cacheUserName = localStorage.getItem('username')
+
+    if (!cacheToken || !cacheUserName) {
       return
     }
-    message.info('欢迎使用后台管理平台')
+
+    axios
+      .get(API.userStatus, { params: { username: cacheUserName } })
+      .then(() => {
+        history.replace('/management/welcome')
+      })
   }, [history])
 
-  const handleFinish = (values: IFormValues) => {
+  const handleFinish = values => {
     const { username, password, remember } = values
     const jsencrypt = new JSEncrypt()
     jsencrypt.setPublicKey(RSA.publicKey)
@@ -60,7 +68,7 @@ export default function Login() {
       .then(res => {
         setLoading(false)
         console.log(res)
-        localStorage.setItem('username', JSON.stringify(res.data?.username))
+        localStorage.setItem('username', username)
         message.success('登录成功!')
         history.push('/management/welcome')
       })

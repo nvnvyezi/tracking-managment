@@ -8,3 +8,6 @@ export const tracking = '/api/v1/tracking'
 export const trackingBatch = '/api/v1/tracking/batch'
 export const trackingStatus = '/api/v1/tracking/status'
 export const trackingVersion = '/api/v1/tracking/version'
+
+/** user */
+export const userStatus = 'api/v1/user/status'

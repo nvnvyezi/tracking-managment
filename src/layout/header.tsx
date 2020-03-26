@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { Menu, Dropdown, Layout, Avatar, Badge } from 'antd'
+import { useHistory } from 'react-router-dom'
+import { Menu, Dropdown, Layout, Avatar } from 'antd'
 import {
   EditOutlined,
-  BellOutlined,
   UserOutlined,
   SettingFilled,
   GithubOutlined,
@@ -10,6 +10,10 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
+
+import * as API from '@/constants/api'
+
+import axios from '@/utils/axios'
 
 import avatar from '@Images/user.jpg'
 
@@ -24,16 +28,15 @@ export interface ILayoutHeaderProps {
 
 function LayoutHeader(props: ILayoutHeaderProps) {
   const { menuClick, menuToggle } = props
-
-  let userName = ''
-  try {
-    userName = JSON.parse(localStorage.getItem('username') || '游客')
-  } catch (error) {}
+  const history = useHistory()
 
   function handleLoginOut() {
-    localStorage.clear()
-    //     this.props.history.push('/login')
-    //     message.success('登出成功!')
+    const username = localStorage.getItem('username')
+    axios.delete(API.userStatus, { data: { username } }).then(() => {
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+      history.replace('/login')
+    })
   }
 
   const menuProps = {
@@ -57,10 +60,8 @@ function LayoutHeader(props: ILayoutHeaderProps) {
         </Menu.Item>
       </Menu.ItemGroup>
       <Menu.Divider />
-      <Menu.Item>
-        <span role="button" onClick={handleLoginOut}>
-          <LogoutOutlined /> 退出登录
-        </span>
+      <Menu.Item onClick={handleLoginOut}>
+        <LogoutOutlined /> 退出登录
       </Menu.Item>
     </Menu>
   )
@@ -73,32 +74,19 @@ function LayoutHeader(props: ILayoutHeaderProps) {
         <MenuFoldOutlined {...menuProps} />
       )}
       <div className="wrapper-user">
-        <div>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/ltadpoles/react-admin"
-          >
-            <GithubOutlined style={{ color: '#000' }} />
-          </a>
-        </div>
-        <div>
-          <Badge dot={true} offset={[-2, 0]}>
-            <a href="https://github.com/ltadpoles/react-admin">
-              <BellOutlined />
-            </a>
-          </Badge>
-        </div>
-
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/nvnvyezi"
+        >
+          <GithubOutlined style={{ color: '#000' }} />
+        </a>
         <Dropdown overlay={userMenu}>
-          <span>
-            <Avatar
-              icon={UserOutlined}
-              src={avatar}
-              alt="avatar"
-              style={{ cursor: 'pointer', backgroundColor: '#f4f5f6' }}
-            />
-            <span className="name">{userName}</span>
+          <span className="user">
+            <Avatar src={avatar} icon={UserOutlined} />
+            <span className="name">
+              {localStorage.getItem('username') || '游客007'}
+            </span>
           </span>
         </Dropdown>
       </div>
@@ -107,12 +95,16 @@ function LayoutHeader(props: ILayoutHeaderProps) {
           display: flex;
           align-items: center;
         }
-        .wrapper-user > div {
-          margin-right: 15px;
+        .wrapper-user > a {
+          display: inline-block;
+          margin-right: 20px;
+        }
+        .user {
+          cursor: pointer;
         }
         .name {
-          margin-left: 10px;
-          cursor: pointer;
+          margin-left: 20px;
+          letter-spacing: 2px;
         }
       `}</style>
     </Header>
