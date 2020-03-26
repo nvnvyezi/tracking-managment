@@ -64,9 +64,11 @@ const { confirm } = Modal
 
 export default function CreatePoint() {
   const [form] = Form.useForm()
+  const statusUpdate = React.useRef(-1)
 
   const [versionList, setVersionList] = React.useState([])
   const [buttonLoading, setButtonLoading] = React.useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
   const [dataSource, setDataSource] = React.useState<ITrackingRes[]>([])
   const [pagination, setPagination] = React.useState<TablePaginationConfig>({
     total: 0,
@@ -75,14 +77,9 @@ export default function CreatePoint() {
     showTotal: total => `共${total}条数据`,
   })
 
-  const statusUpdate = React.useRef(-1)
-
-  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
-
   const rowSelection = {
     selectedRowKeys,
     onChange: selectedRowKeys => {
-      console.log('selectedRowKeys changed: ', selectedRowKeys)
       setSelectedRowKeys(selectedRowKeys)
     },
   }
@@ -280,7 +277,15 @@ export default function CreatePoint() {
   ]
 
   function handleMenuClick(e: ClickParam) {
-    console.log('click', e)
+    axios
+      .patch(API.trackingBatch, {
+        status: e.key,
+        demand: selectedRowKeys.join(','),
+      })
+      .then(() => {
+        message.success('状态更新成功')
+        handleTableChange(pagination)
+      })
   }
 
   const onFinish = () => {
@@ -302,7 +307,7 @@ export default function CreatePoint() {
   function renderForm() {
     const menu = (
       <Menu onClick={handleMenuClick}>
-        <Menu.Item key="1">拒绝</Menu.Item>
+        <Menu.Item key="5">拒绝</Menu.Item>
         <Menu.Item key="2">开发完成</Menu.Item>
         <Menu.Item key="3">上线</Menu.Item>
         <Menu.Item key="4">下线</Menu.Item>
