@@ -2,12 +2,11 @@ import * as React from 'react'
 import { JSEncrypt } from 'jsencrypt'
 import { Link, useHistory } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { ValidateErrorEntity } from 'rc-field-form/lib/interface'
 import {
+  Card,
   Form,
   Input,
   Button,
-  Divider,
   message,
   Checkbox,
   notification,
@@ -19,12 +18,6 @@ import * as RSA from '@/constants/rsa'
 import axios from '@/utils/axios'
 
 import './index.less'
-
-interface ILoginAxios {
-  status: boolean
-  username: string
-  remember: boolean
-}
 
 export default function Login() {
   const history = useHistory()
@@ -52,46 +45,34 @@ export default function Login() {
       })
   }, [history])
 
-  const handleFinish = values => {
-    const { username, password, remember } = values
+  const onFinish = ({ username, password, remember }: any) => {
     const jsencrypt = new JSEncrypt()
     jsencrypt.setPublicKey(RSA.publicKey)
     const rsaPassword = jsencrypt.encrypt(password)
     setLoading(true)
 
     axios
-      .post<ILoginAxios>(API.login, {
+      .post(API.login, {
         username,
         password: rsaPassword,
         remember,
       })
       .then(res => {
-        setLoading(false)
-        console.log(res)
-        localStorage.setItem('username', username)
         message.success('登录成功!')
+        localStorage.setItem('username', username)
+        localStorage.setItem('admin', res?.data?.admin)
+
         history.push('/management/welcome')
       })
-      .catch(err => {
+      .finally(() => {
         setLoading(false)
-        message.error(err.message)
       })
-  }
-
-  const handleFinishFailed = ({ errorFields }: ValidateErrorEntity) => {
-    message.error(errorFields?.[0]?.errors?.[0])
   }
 
   return (
     <div className="wrapper">
-      <div className="card-style wrapper-form">
-        <h3>后台管理系统</h3>
-        <Divider />
-        <Form
-          onFinish={handleFinish}
-          initialValues={{ remember: true }}
-          onFinishFailed={handleFinishFailed}
-        >
+      <Card title="数据分析管理平台" style={{ width: 360 }}>
+        <Form onFinish={onFinish} initialValues={{ remember: true }}>
           <Form.Item
             name="username"
             rules={[
@@ -106,24 +87,34 @@ export default function Login() {
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[{ required: true, max: 16, min: 6, message: '请输入密码' }]}
+            rules={[
+              {
+                required: true,
+                pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/,
+                message:
+                  '密码不能为空且最必须包含一个字母和一个数字且数量在8～16之内',
+              },
+            ]}
           >
-            <Input
+            <Input.Password
               maxLength={16}
-              type="password"
               placeholder="密码"
               prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked">
+          <Form.Item style={{ marginBottom: 15 }}>
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+              style={{ marginBottom: 0 }}
+            >
               <Checkbox>记住密码</Checkbox>
             </Form.Item>
             <Link to="/registry" style={{ float: 'right' }}>
               立即注册
             </Link>
           </Form.Item>
-          <Form.Item>
+          <Form.Item style={{ marginBottom: 5 }}>
             <Button
               type="primary"
               htmlType="submit"
@@ -134,7 +125,7 @@ export default function Login() {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
       <style jsx>{`
         .wrapper {
           display: flex;
@@ -144,9 +135,10 @@ export default function Login() {
           background: url(${require('@Images/login.jpg').default}) no-repeat 0 0 /
             100% 100%;
         }
-        .wrapper-form {
-          width: 350px;
-          padding: 20px 20px 0;
+        .wrapper :global(.ant-form-item-control-input-content) {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
       `}</style>
     </div>
