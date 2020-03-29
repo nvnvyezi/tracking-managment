@@ -53,6 +53,8 @@ instance.interceptors.response.use(
         msg = '身份验证失败'
         break
       case 403:
+      case 498:
+      case 499:
         msg = response.data.msg
         break
       case 404:

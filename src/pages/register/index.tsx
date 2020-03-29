@@ -1,16 +1,8 @@
 import * as React from 'react'
 import { JSEncrypt } from 'jsencrypt'
-import { Link, useHistory } from 'react-router-dom'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import {
-  Card,
-  Form,
-  Input,
-  Button,
-  message,
-  Checkbox,
-  notification,
-} from 'antd'
+import { useHistory } from 'react-router-dom'
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+import { Card, Form, Input, Button, message } from 'antd'
 
 import * as API from '@/constants/api'
 import * as RSA from '@/constants/rsa'
@@ -20,13 +12,6 @@ import axios from '@/utils/axios'
 export default function Login() {
   const history = useHistory()
   const [loading, setLoading] = React.useState(false)
-
-  React.useEffect(() => {
-    notification.open({
-      message: '欢迎使用数据分析管理平台',
-      description: '无账号请进行注册或者联系管理员',
-    })
-  }, [])
 
   React.useEffect(() => {
     const cacheToken = localStorage.getItem('token')
@@ -43,24 +28,25 @@ export default function Login() {
       })
   }, [history])
 
-  const onFinish = ({ username, password, remember }: any) => {
+  const onFinish = ({ username, password, passwordAgain, email }: any) => {
+    if (password !== passwordAgain) {
+      message.error('两次密码不一致！')
+      return
+    }
     const jsencrypt = new JSEncrypt()
     jsencrypt.setPublicKey(RSA.publicKey)
     const rsaPassword = jsencrypt.encrypt(password)
     setLoading(true)
 
     axios
-      .post(API.login, {
+      .post(API.register, {
+        email,
         username,
         password: rsaPassword,
-        remember,
       })
-      .then(res => {
-        message.success('登录成功!')
-        localStorage.setItem('username', username)
-        localStorage.setItem('admin', res?.data?.admin)
-
-        history.push('/management/welcome')
+      .then(() => {
+        message.success('注册成功!')
+        history.push('/login')
       })
       .finally(() => {
         setLoading(false)
@@ -69,12 +55,18 @@ export default function Login() {
 
   return (
     <div className="wrapper">
-      <Card title="数据分析管理平台" style={{ width: 360 }}>
+      <Card title="用户注册" style={{ width: 360 }}>
         <Form onFinish={onFinish} initialValues={{ remember: true }}>
           <Form.Item
             name="username"
             rules={[
-              { required: true, max: 16, min: 1, message: '用户名格式不对!' },
+              {
+                min: 1,
+                max: 16,
+                required: true,
+                whitespace: true,
+                message: '用户名格式不对!',
+              },
             ]}
           >
             <Input
@@ -88,6 +80,7 @@ export default function Login() {
             rules={[
               {
                 required: true,
+                whitespace: true,
                 pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/,
                 message:
                   '密码不能为空且最必须包含一个字母和一个数字且数量在8～16之内',
@@ -100,15 +93,45 @@ export default function Login() {
               prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
             />
           </Form.Item>
-          <Form.Item style={{ marginBottom: 15 }}>
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-              style={{ marginBottom: 0 }}
-            >
-              <Checkbox>记住密码</Checkbox>
-            </Form.Item>
-            <Link to="/register">立即注册</Link>
+          <Form.Item
+            name="passwordAgain"
+            rules={[
+              {
+                required: true,
+                message:
+                  '密码不能为空且最必须包含一个字母和一个数字且数量在8～16之内',
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve()
+                  }
+                  return Promise.reject('两次密码不一致!')
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              maxLength={16}
+              placeholder="再次输入密码"
+              prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+            />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                whitespace: true,
+                message: '邮箱格式不对!',
+                pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
+              },
+            ]}
+          >
+            <Input
+              maxLength={16}
+              placeholder="邮箱"
+              prefix={<MailOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
+            />
           </Form.Item>
           <Form.Item style={{ marginBottom: 5 }}>
             <Button
@@ -117,7 +140,7 @@ export default function Login() {
               loading={loading}
               style={{ width: '100%' }}
             >
-              登录
+              注册
             </Button>
           </Form.Item>
         </Form>
@@ -130,11 +153,6 @@ export default function Login() {
           height: 100vh;
           background: url(${require('@Images/login.jpg').default}) no-repeat 0 0 /
             100% 100%;
-        }
-        .wrapper :global(.ant-form-item-control-input-content) {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
         }
       `}</style>
     </div>

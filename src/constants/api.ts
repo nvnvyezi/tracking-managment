@@ -1,4 +1,5 @@
 export const login = '/api/v1/login'
+export const register = '/api/v1/register'
 
 /** 属性 */
 export const attribute = '/api/v1/attribute'

@@ -10,6 +10,7 @@ import { HashRouter, Route, Redirect, Switch } from 'react-router-dom'
 // import Home from './layout'
 
 import Login from '@/pages/login'
+import Register from '@/pages/register'
 import { Loading } from '@/components/loading'
 
 import Home from './layout'
@@ -44,6 +45,15 @@ export default function App() {
           render={() => (
             <Suspense fallback={<Loading />}>
               <Login />
+            </Suspense>
+          )}
+        />
+        <Route
+          exact
+          path="/register"
+          render={() => (
+            <Suspense fallback={<Loading />}>
+              <Register />
             </Suspense>
           )}
         />
