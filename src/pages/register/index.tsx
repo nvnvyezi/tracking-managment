@@ -46,7 +46,9 @@ export default function Login() {
       })
       .then(() => {
         message.success('注册成功!')
-        history.push('/login')
+        setTimeout(() => {
+          history.push('/login')
+        }, 100)
       })
       .finally(() => {
         setLoading(false)
@@ -56,7 +58,7 @@ export default function Login() {
   return (
     <div className="wrapper">
       <Card title="用户注册" style={{ width: 360 }}>
-        <Form onFinish={onFinish} initialValues={{ remember: true }}>
+        <Form onFinish={onFinish}>
           <Form.Item
             name="username"
             rules={[

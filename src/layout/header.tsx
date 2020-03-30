@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { Menu, Dropdown, Layout, Avatar } from 'antd'
 import {
   EditOutlined,
@@ -33,8 +33,7 @@ function LayoutHeader(props: ILayoutHeaderProps) {
   function handleLoginOut() {
     const username = localStorage.getItem('username')
     axios.delete(API.userStatus, { data: { username } }).then(() => {
-      localStorage.removeItem('token')
-      localStorage.removeItem('username')
+      localStorage.clear()
       history.replace('/login')
     })
   }
@@ -51,8 +50,10 @@ function LayoutHeader(props: ILayoutHeaderProps) {
       <Menu.ItemGroup title="用户设置">
         <Menu.Divider />
         <Menu.Item>
-          <EditOutlined />
-          个人设置
+          <Link to="/management/user/own">
+            <EditOutlined style={{ marginRight: 8 }} />
+            个人设置
+          </Link>
         </Menu.Item>
         <Menu.Item>
           <SettingFilled />

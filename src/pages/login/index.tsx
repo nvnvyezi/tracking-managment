@@ -58,9 +58,12 @@ export default function Login() {
       .then(res => {
         message.success('登录成功!')
         localStorage.setItem('username', username)
+        localStorage.setItem('email', res?.data?.email)
         localStorage.setItem('admin', res?.data?.admin)
 
-        history.push('/management/welcome')
+        setTimeout(() => {
+          history.push('/management/welcome')
+        }, 100)
       })
       .finally(() => {
         setLoading(false)
