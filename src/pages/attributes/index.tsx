@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
 import {
   Form,
+  Card,
   Table,
   Input,
   Modal,
@@ -186,7 +187,7 @@ export default function Attributes() {
 
   function renderForm() {
     return (
-      <div className="card-style">
+      <Card title="属性筛选项" style={{ marginBottom: 20 }}>
         <Form
           layout="inline"
           name="tracking"
@@ -241,13 +242,7 @@ export default function Attributes() {
             </Button>
           </Form.Item>
         </Form>
-        <style jsx>{`
-          div {
-            margin-bottom: 20px;
-            padding: 40px 30px;
-          }
-        `}</style>
-      </div>
+      </Card>
     )
   }
 
@@ -300,15 +295,16 @@ export default function Attributes() {
         </Form>
       </Modal>
       {renderForm()}
-      <Table
-        bordered
-        rowKey="name"
-        columns={columns}
-        className="card-style"
-        dataSource={dataSource}
-        pagination={pagination}
-        onChange={handleTableChange}
-      />
+      <Card title="所有属性">
+        <Table
+          bordered
+          rowKey="name"
+          columns={columns}
+          dataSource={dataSource}
+          pagination={pagination}
+          onChange={handleTableChange}
+        />
+      </Card>
     </Content>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, Button, Radio, message } from 'antd'
+import { Form, Card, Input, Button, Radio, message } from 'antd'
 import { RedoOutlined } from '@ant-design/icons'
 import * as API from '@/constants/api'
 
@@ -30,8 +30,7 @@ export default function CreateTrack() {
         { value: '新增属性' },
       ]}
     >
-      <div className="card-style wrapper-create">
-        <h4>属性相关信息</h4>
+      <Card title="属性相关信息" className="wrapper-attribute-create">
         <Form
           form={form}
           onFinish={onFinash}
@@ -102,12 +101,9 @@ export default function CreateTrack() {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
       <style jsx>{`
-        h4 {
-          margin-bottom: 60px;
-        }
-        .wrapper-create :global(.ant-input-affix-wrapper) {
+        :global(.wrapper-attribute-create .ant-input-affix-wrapper) {
           width: 400px;
         }
       `}</style>

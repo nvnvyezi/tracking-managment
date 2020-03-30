@@ -1,4 +1,5 @@
 import React from 'react'
+import { Card } from 'antd'
 
 import CustomTable from '@/components/custom-table'
 
@@ -121,19 +122,13 @@ const dataSource = [
 
 export default function EventAnalyzeTable() {
   return (
-    <div className="wrapper-table">
+    <Card title="表格数据" style={{ marginTop: 20 }}>
       <CustomTable
         rowKey="event"
         columns={columns}
         dataSource={dataSource}
         scroll={{ x: 1500, y: 800 }}
       />
-      <style jsx>{`
-        .wrapper-table {
-          margin-top: 10px;
-          border-radius: 4px;
-        }
-      `}</style>
-    </div>
+    </Card>
   )
 }

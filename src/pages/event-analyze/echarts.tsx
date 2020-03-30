@@ -1,4 +1,5 @@
 import React from 'react'
+import { Card } from 'antd'
 
 import { ReactEchartsCommon } from '@/components/echarts'
 
@@ -127,13 +128,8 @@ export default function Echarts() {
   }
 
   return (
-    <div className="card-style wrapper-echarts">
-      <h4>图标</h4>
+    <Card title="数据图表" style={{ marginTop: 20 }}>
       <ReactEchartsCommon option={options} style={{ height: 500 }} />
-      <style jsx>{`
-        .wrapper-echarts {
-          margin-top: 20px;
-      `}</style>
-    </div>
+    </Card>
   )
 }

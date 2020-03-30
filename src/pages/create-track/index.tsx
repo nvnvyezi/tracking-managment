@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Form, Input, Button, Radio, message } from 'antd'
+import { Form, Card, Input, Button, Radio, message } from 'antd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 
 import * as API from '@/constants/api'
@@ -74,8 +74,7 @@ export default function CreateTrack() {
 
   return (
     <Content crumbData={[{ value: '新增埋点' }]}>
-      <div className="card-style wrapper-create">
-        <h4>埋点相关信息</h4>
+      <Card title="埋点相关信息" className="wrapper-track-create">
         <Form
           form={form}
           onFinish={onFinash}
@@ -254,12 +253,9 @@ export default function CreateTrack() {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+      </Card>
       <style jsx>{`
-        h4 {
-          margin-bottom: 60px;
-        }
-        .wrapper-create :global(.ant-form-item-control-input) {
+        :global(.wrapper-track-create .ant-form-item-control-input) {
           width: 400px;
         }
       `}</style>

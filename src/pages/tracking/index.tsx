@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import {
   Row,
   Col,
+  Card,
   Menu,
   Form,
   Input,
@@ -314,7 +315,7 @@ export default function CreatePoint() {
       </Menu>
     )
     return (
-      <div className="card-style">
+      <Card title="埋点筛选项" style={{ marginBottom: 20 }}>
         <Form form={form} name="tracking" onFinish={onFinish}>
           <Row gutter={24}>
             {formData.map(form => (
@@ -436,20 +437,14 @@ export default function CreatePoint() {
             </Col>
           </Row>
         </Form>
-        <style jsx>{`
-          div {
-            margin-bottom: 20px;
-            padding-bottom: 0;
-          }
-        `}</style>
-      </div>
+      </Card>
     )
   }
 
   return (
     <Content crumbData={[{ value: '埋点管理' }]}>
       {renderForm()}
-      <div className="card-style">
+      <Card title="所有埋点">
         <Table
           bordered
           rowKey="demand"
@@ -460,7 +455,7 @@ export default function CreatePoint() {
           rowSelection={rowSelection}
           onChange={handleTableChange}
         />
-      </div>
+      </Card>
     </Content>
   )
 }
