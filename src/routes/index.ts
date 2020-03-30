@@ -3,6 +3,7 @@
 // )
 
 import Welcome from '@/pages/welcome'
+import UserAll from '@/pages/user-all'
 import UserOwn from '@/pages/user-own'
 import Tracking from '@/pages/tracking'
 import Attributes from '@/pages/attributes'
@@ -59,6 +60,13 @@ const routes = [
     name: '个人信息',
     path: '/user/own',
     component: UserOwn,
+  },
+  {
+    exact: true,
+    auth: false,
+    name: '所有用户',
+    path: '/user/all',
+    component: UserAll,
   },
 ]
 

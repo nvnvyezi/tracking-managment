@@ -56,8 +56,10 @@ function LayoutHeader(props: ILayoutHeaderProps) {
           </Link>
         </Menu.Item>
         <Menu.Item>
-          <SettingFilled />
-          系统设置
+          <Link to="/management/user/all">
+            <SettingFilled style={{ marginRight: 8 }} />
+            系统设置
+          </Link>
         </Menu.Item>
       </Menu.ItemGroup>
       <Menu.Divider />

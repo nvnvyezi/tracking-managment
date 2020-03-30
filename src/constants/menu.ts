@@ -42,7 +42,7 @@ const menu: ICustomMenu = [
     Icon: UserSwitchOutlined,
     subs: [
       { title: '个人信息', key: '/management/user/own' },
-      { title: '所有信息', key: '/management/user/create' },
+      { title: '所有用户', key: '/management/user/all' },
     ],
   },
 ]

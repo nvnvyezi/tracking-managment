@@ -12,4 +12,5 @@ export const trackingVersion = '/api/v1/tracking/version'
 
 /** user */
 export const user = 'api/v1/user'
+export const userAdmin = 'api/v1/user/admin'
 export const userStatus = 'api/v1/user/status'
