@@ -8,35 +8,51 @@ import axios from '@/utils/axios'
 import Content from '@/layout/content'
 
 import Echarts from './echarts'
-import EventAnalyzeTable from './table'
+import EventAnalyzeTable, { IFieldsValue } from './table'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
 
-const initData: any[] = []
-for (let i = 10; i < 36; i++) {
-  initData.push({ label: i.toString(36) + i, value: i.toString(36) + i })
-}
-
 export default function EventAnalyze() {
+  const [form] = Form.useForm()
+  const [events, setEvents] = React.useState([])
   const [demands, setDemands] = React.useState([])
+  const [buttonLoading, setButtonLoading] = React.useState(false)
+  const [fieldsValue, setFieldsValue] = React.useState<IFieldsValue>({})
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form:', values)
+  const onFinish = values => {
+    setButtonLoading(true)
+    setFieldsValue(values)
+    setTimeout(() => {
+      setButtonLoading(false)
+    }, 1000)
   }
 
   React.useEffect(() => {
-    axios.get(API.trackingDemand).then(res => {
+    axios.get(API.eventDemand).then(res => {
       setDemands(res.data)
+      form.setFieldsValue({ demand: res.data?.[0] })
+      setFieldsValue(prev => ({
+        ...prev,
+        demand: res.data?.[0],
+      }))
     })
-  }, [])
+    axios.get(API.eventEvent).then(res => {
+      setEvents(res.data)
+      form.setFieldsValue({ event: res.data?.[0] })
+      setFieldsValue(prev => ({
+        ...prev,
+        event: res.data?.[0],
+      }))
+    })
+  }, [form])
 
   function renderFormContent() {
     return (
       <Card title="事件筛选项">
-        <Form layout="inline" onFinish={onFinish}>
+        <Form form={form} layout="inline" onFinish={onFinish}>
           <Form.Item name="demand" label="需求名称">
-            <Select style={{ width: 200 }} placeholder="请选择需求名称">
+            <Select style={{ width: 250 }} placeholder="请选择需求名称">
               {demands.map(item => (
                 <Option key={item} value={item}>
                   {item}
@@ -44,16 +60,11 @@ export default function EventAnalyze() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="events" label="事件名称">
-            <Select
-              allowClear
-              mode="multiple"
-              style={{ width: 300 }}
-              placeholder="请选择事件"
-            >
-              {initData.map(item => (
-                <Option key={item.label} value={item.value}>
-                  {item.value}
+          <Form.Item name="event" label="事件名称">
+            <Select style={{ width: 250 }} placeholder="请选择事件">
+              {events.map(item => (
+                <Option key={item} value={item}>
+                  {item}
                 </Option>
               ))}
             </Select>
@@ -65,8 +76,8 @@ export default function EventAnalyze() {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              <SearchOutlined />
+            <Button type="primary" htmlType="submit" loading={buttonLoading}>
+              {!buttonLoading && <SearchOutlined />}
               查询
             </Button>
           </Form.Item>
@@ -78,8 +89,8 @@ export default function EventAnalyze() {
   return (
     <Content crumbData={[{ value: '事件分析' }]}>
       {renderFormContent()}
-      <Echarts />
-      <EventAnalyzeTable />
+      <Echarts fieldsValue={fieldsValue} />
+      <EventAnalyzeTable fieldsValue={fieldsValue} />
     </Content>
   )
 }

@@ -1,6 +1,12 @@
 export const login = '/api/v1/login'
 export const register = '/api/v1/register'
 
+/** 用户上报数据 */
+export const event = 'api/v1/event'
+export const eventEvent = 'api/v1/event/event'
+export const eventCount = 'api/v1/event/count'
+export const eventDemand = 'api/v1/event/demand'
+
 /** 属性 */
 export const attribute = '/api/v1/attribute'
 
