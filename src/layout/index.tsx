@@ -7,7 +7,7 @@ import { ICustomMenu } from '@/interface/global'
 
 import LayoutSider from './sider'
 import LayoutHeader from './header'
-import LayoutFooter from './footer'
+// import LayoutFooter from './footer'
 
 const { Content } = Layout
 

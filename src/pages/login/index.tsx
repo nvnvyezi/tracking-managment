@@ -2,15 +2,7 @@ import * as React from 'react'
 import { JSEncrypt } from 'jsencrypt'
 import { Link, useHistory } from 'react-router-dom'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import {
-  Card,
-  Form,
-  Input,
-  Button,
-  message,
-  Checkbox,
-  notification,
-} from 'antd'
+import { Form, Input, Button, message, Checkbox, notification } from 'antd'
 
 import * as API from '@/constants/api'
 import * as RSA from '@/constants/rsa'
@@ -72,7 +64,9 @@ export default function Login() {
 
   return (
     <div className="wrapper">
-      <Card title="数据分析管理平台" style={{ width: 360 }}>
+      <div className="wrapper-icon" />
+      <div className="wrapperForm">
+        <h3>数据分析管理平台</h3>
         <Form onFinish={onFinish} initialValues={{ remember: true }}>
           <Form.Item
             name="username"
@@ -83,6 +77,7 @@ export default function Login() {
             <Input
               maxLength={16}
               placeholder="用户名"
+              style={{ lineHeight: '32px' }}
               prefix={<UserOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
             />
           </Form.Item>
@@ -100,6 +95,7 @@ export default function Login() {
             <Input.Password
               maxLength={16}
               placeholder="密码"
+              style={{ lineHeight: '32px' }}
               prefix={<LockOutlined style={{ color: 'rgba(0,0,0,0.25)' }} />}
             />
           </Form.Item>
@@ -118,26 +114,42 @@ export default function Login() {
               type="primary"
               htmlType="submit"
               loading={loading}
-              style={{ width: '100%' }}
+              style={{ width: '100%', height: '40px' }}
             >
               登录
             </Button>
           </Form.Item>
         </Form>
-      </Card>
+      </div>
       <style jsx>{`
         .wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
           height: 100vh;
-          background: url(${require('@Images/login.jpg').default}) no-repeat 0 0 /
-            100% 100%;
         }
         .wrapper :global(.ant-form-item-control-input-content) {
           display: flex;
           justify-content: space-between;
           align-items: center;
+        }
+        .wrapper-icon {
+          width: 300px;
+          height: 300px;
+          margin-top: 30px;
+          margin-right: 100px;
+          background: url(${require('@Images/login.png').default}) no-repeat 0 0 /
+            contain;
+        }
+        .wrapperForm {
+          width: 400px;
+        }
+        h3 {
+          margin-bottom: 30px;
+          text-align: center;
+          font-size: 30px;
+          font-weight: 700;
+          color: rgba(0, 0, 0, 0.65);
         }
       `}</style>
     </div>

@@ -3,15 +3,14 @@ import dayjs from 'dayjs'
 import {
   Form,
   Card,
-  Table,
   Input,
   Button,
-  DatePicker,
   message,
   Timeline,
+  DatePicker,
+  Descriptions,
 } from 'antd'
-import { RedoOutlined, SearchOutlined } from '@ant-design/icons'
-import { ColumnProps } from 'antd/es/table'
+import { SearchOutlined } from '@ant-design/icons'
 
 import * as API from '@/constants/api'
 
@@ -30,6 +29,7 @@ interface IEventRes {
   system: string
   country: string
   province: string
+  deviceId: string
   useragent: string
   createTime: string
 }
@@ -46,107 +46,8 @@ export default function Attributes() {
   const [buttonLoading, setButtonLoading] = React.useState(false)
   const [fieldsValue, setFieldsValue] = React.useState<IFieldsValue>({})
 
-  const columns: ColumnProps<IEventRes>[] = [
-    {
-      width: 140,
-      title: '事件',
-      key: 'event',
-      fixed: 'left',
-      dataIndex: 'event',
-    },
-    {
-      width: 140,
-      title: '设备Id',
-      key: 'deviceId',
-      dataIndex: 'deviceId',
-    },
-    {
-      width: 300,
-      key: 'params',
-      title: 'Params',
-      dataIndex: 'params',
-      render: value => {
-        const parseValue = JSON.parse(value)
-        const keys = Object.keys(parseValue)
-        return keys.map((key, index) => (
-          <div key={key}>
-            <h5>参数{index + 1}：</h5>
-            <p>
-              <span className="name">{key}</span>
-              <span className="type">{parseValue[key]}</span>
-            </p>
-            <style jsx>{`
-              .name,
-              .type {
-                display: inline-block;
-                min-width: 100px;
-                margin-right: 20px;
-              }
-              .type {
-                min-width: 50px;
-              }
-            `}</style>
-          </div>
-        ))
-      },
-    },
-    {
-      key: 'url',
-      width: 250,
-      title: '页面url',
-      dataIndex: 'url',
-    },
-    {
-      title: '设备',
-      width: 100,
-      key: 'system',
-      dataIndex: 'system',
-    },
-    {
-      key: 'ip',
-      width: 180,
-      dataIndex: 'ip',
-      title: '客户端ip地址',
-    },
-    {
-      width: 100,
-      title: '国家',
-      key: 'country',
-      dataIndex: 'country',
-    },
-    {
-      width: 100,
-      title: '省份',
-      key: 'province',
-      dataIndex: 'province',
-    },
-    {
-      width: 100,
-      key: 'city',
-      title: '城市',
-      dataIndex: 'city',
-    },
-    {
-      width: 260,
-      key: 'useragent',
-      title: '浏览器信息',
-      dataIndex: 'useragent',
-    },
-    {
-      width: 240,
-      title: '创建时间',
-      key: 'createTime',
-      dataIndex: 'createTime',
-      render: time => dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
-    },
-  ]
-
   const onFinish = values => {
     setFieldsValue(values)
-  }
-
-  const handleReset = () => {
-    form.resetFields()
   }
 
   React.useEffect(() => {
@@ -205,15 +106,6 @@ export default function Attributes() {
               {!buttonLoading && <SearchOutlined />}
               查询
             </Button>
-            <Button
-              type="primary"
-              onClick={handleReset}
-              loading={buttonLoading}
-              style={{ marginLeft: 20 }}
-            >
-              {!buttonLoading && <RedoOutlined />}
-              重置
-            </Button>
           </Form.Item>
         </Form>
       </Card>
@@ -232,14 +124,34 @@ export default function Attributes() {
                 color="green"
                 label={dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
               >
-                <Table
-                  bordered
-                  rowKey="event"
-                  columns={columns}
-                  pagination={false}
-                  dataSource={[item]}
-                  scroll={{ x: 1630, y: 800 }}
-                />
+                <Descriptions title={item.event} column={2}>
+                  <Descriptions.Item label="deviceId">
+                    {item.deviceId}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="params">
+                    {item.params}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="url">{item.url}</Descriptions.Item>
+                  <Descriptions.Item label="system">
+                    {item.system}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="ip">{item.ip}</Descriptions.Item>
+                  <Descriptions.Item label="country">
+                    {item.country}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="province">
+                    {item.province}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="city">
+                    {item.city}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="useragent">
+                    {item.useragent}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="createTime">
+                    {dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
+                  </Descriptions.Item>
+                </Descriptions>
               </Timeline.Item>
             ))}
           </Timeline>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { JSEncrypt } from 'jsencrypt'
 import { useHistory } from 'react-router-dom'
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
-import { Card, Form, Input, Button, message } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 
 import * as API from '@/constants/api'
 import * as RSA from '@/constants/rsa'
@@ -57,7 +57,9 @@ export default function Login() {
 
   return (
     <div className="wrapper">
-      <Card title="用户注册" style={{ width: 360 }}>
+      <div className="wrapper-icon" />
+      <div className="wrapperForm">
+        <h3>用户注册</h3>
         <Form onFinish={onFinish}>
           <Form.Item
             name="username"
@@ -146,15 +148,31 @@ export default function Login() {
             </Button>
           </Form.Item>
         </Form>
-      </Card>
+      </div>
       <style jsx>{`
         .wrapper {
           display: flex;
           justify-content: center;
           align-items: center;
           height: 100vh;
-          background: url(${require('@Images/login.jpg').default}) no-repeat 0 0 /
-            100% 100%;
+        }
+        .wrapper-icon {
+          width: 300px;
+          height: 300px;
+          margin-top: 30px;
+          margin-right: 100px;
+          background: url(${require('@Images/login.png').default}) no-repeat 0 0 /
+            contain;
+        }
+        .wrapperForm {
+          width: 400px;
+        }
+        h3 {
+          margin-bottom: 30px;
+          text-align: center;
+          font-size: 30px;
+          font-weight: 700;
+          color: rgba(0, 0, 0, 0.65);
         }
       `}</style>
     </div>

@@ -9,6 +9,7 @@ import { HashRouter, Route, Redirect, Switch } from 'react-router-dom'
 // import Login from './pages/login'
 // import Home from './layout'
 
+import Block from '@/pages/404'
 import Login from '@/pages/login'
 import Register from '@/pages/register'
 import { Loading } from '@/components/loading'
@@ -66,7 +67,7 @@ export default function App() {
           )}
         />
         {/* <Route path="/404" component={View404} /> */}
-        <Route exact path="/404" render={() => <div>4044</div>} />
+        <Route exact path="/404" component={Block} />
         <Redirect to="/404" />
       </Switch>
     </HashRouter>

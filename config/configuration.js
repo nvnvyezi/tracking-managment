@@ -50,6 +50,6 @@ exports.HTTPS = {}
 /** 添加meta标签 */
 exports.META = {}
 /** 网页title */
-exports.TITLE = 'webpack-scaffold'
+exports.TITLE = '数据分析管理平台'
 /** favicon路径 */
 exports.FAVICON = resolve('../public/favicon.ico')

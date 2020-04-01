@@ -197,18 +197,18 @@ export default function Attributes() {
         >
           <Form.Item name="creator" label="创建者">
             <Input
-              style={{ width: 260 }}
+              style={{ width: 240 }}
               placeholder="请输入创建者名字，支持模糊搜索"
             />
           </Form.Item>
           <Form.Item name="name" label="属性名称">
             <Input
-              style={{ width: 260 }}
+              style={{ width: 240 }}
               placeholder="请输入属性名称，支持模糊搜索"
             />
           </Form.Item>
           <Form.Item name="type" label="类型">
-            <Select style={{ width: 140 }}>
+            <Select style={{ width: 100 }}>
               <Option value="">全部</Option>
               <Option value="string">string</Option>
               <Option value="number">number</Option>
@@ -217,7 +217,7 @@ export default function Attributes() {
           </Form.Item>
           <Form.Item>
             <Link to="create">
-              <Button type="primary" style={{ marginLeft: 20 }}>
+              <Button type="primary">
                 <PlusOutlined />
                 新建
               </Button>
@@ -226,18 +226,18 @@ export default function Attributes() {
               type="primary"
               htmlType="submit"
               loading={buttonLoading}
-              style={{ marginLeft: 30 }}
+              style={{ marginLeft: 10 }}
             >
-              <SearchOutlined />
+              {!buttonLoading && <SearchOutlined />}
               查询
             </Button>
             <Button
               type="primary"
               onClick={handleReset}
               loading={buttonLoading}
-              style={{ marginLeft: 20 }}
+              style={{ marginLeft: 10 }}
             >
-              <RedoOutlined />
+              {!buttonLoading && <RedoOutlined />}
               重置
             </Button>
           </Form.Item>
