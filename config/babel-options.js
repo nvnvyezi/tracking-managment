@@ -17,7 +17,7 @@ const plugins = [
     'import',
     {
       libraryName: 'antd',
-      style: true,
+      style: 'css',
     },
   ],
   ['transform-class-properties', { spec: true }],

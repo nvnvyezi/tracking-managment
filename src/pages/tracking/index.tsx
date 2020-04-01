@@ -316,7 +316,12 @@ export default function CreatePoint() {
     )
     return (
       <Card title="埋点筛选项" style={{ marginBottom: 20 }}>
-        <Form form={form} name="tracking" onFinish={onFinish}>
+        <Form
+          form={form}
+          name="tracking"
+          onFinish={onFinish}
+          initialValues={{ system: '', type: '', status: '' }}
+        >
           <Row gutter={24}>
             {formData.map(form => (
               <Col key={form.key} span={8}>
@@ -326,7 +331,7 @@ export default function CreatePoint() {
                   labelCol={{ span: 6 }}
                   wrapperCol={{ span: 17, offset: 1 }}
                 >
-                  <Select defaultValue={form.defaultValue}>
+                  <Select>
                     {form.data.map(item => (
                       <Option value={item.value} key={item.value}>
                         {item.label}

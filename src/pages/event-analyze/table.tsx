@@ -75,6 +75,13 @@ export default function EventAnalyzeTable({
       dataIndex: 'event',
     },
     {
+      width: 160,
+      fixed: 'left',
+      title: '设备Id',
+      key: 'deviceId',
+      dataIndex: 'deviceId',
+    },
+    {
       width: 300,
       key: 'params',
       title: 'Params',

@@ -2,6 +2,7 @@ import { ICustomMenu } from '@/interface/global'
 import {
   HomeOutlined,
   ClusterOutlined,
+  DatabaseOutlined,
   LineChartOutlined,
   UserSwitchOutlined,
   DeploymentUnitOutlined,
@@ -35,6 +36,11 @@ const menu: ICustomMenu = [
     title: '事件分析',
     Icon: LineChartOutlined,
     key: '/management/event-analyze',
+  },
+  {
+    title: '日志细查',
+    Icon: DatabaseOutlined,
+    key: '/management/detailed',
   },
   {
     title: '用户管理',

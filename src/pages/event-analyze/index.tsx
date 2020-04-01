@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Card, Select, Button, DatePicker } from 'antd'
+import { Form, Card, Select, Button, DatePicker, message } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
 import * as API from '@/constants/api'
@@ -21,6 +21,10 @@ export default function EventAnalyze() {
   const [fieldsValue, setFieldsValue] = React.useState<IFieldsValue>({})
 
   const onFinish = values => {
+    if (!values.date?.length) {
+      message.warn('请选择时间')
+      return
+    }
     setButtonLoading(true)
     setFieldsValue(values)
     setTimeout(() => {

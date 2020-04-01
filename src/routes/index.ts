@@ -5,6 +5,7 @@
 import Welcome from '@/pages/welcome'
 import UserAll from '@/pages/user-all'
 import UserOwn from '@/pages/user-own'
+import Detailed from '@/pages/detailed'
 import Tracking from '@/pages/tracking'
 import Attributes from '@/pages/attributes'
 import CreateTrack from '@/pages/create-track'
@@ -53,6 +54,13 @@ const routes = [
     name: '事件分析',
     path: '/event-analyze',
     component: EventAnalyze,
+  },
+  {
+    exact: true,
+    auth: false,
+    name: '日志细查',
+    path: '/detailed',
+    component: Detailed,
   },
   {
     exact: true,
