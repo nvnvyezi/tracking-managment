@@ -80,7 +80,7 @@
     "antd": "^4.1.0",
     "axios": "^0.32.0",
     "dayjs": "^1.8.23",
-    "echarts": "^4.6.0",
+    "echarts": "^6.1.0",
     "echarts-for-react": "^2.0.15-beta.1",
     "jsencrypt": "^3.0.0-rc.1",
     "less": "^3.10.3",
